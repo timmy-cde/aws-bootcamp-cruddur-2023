@@ -12,7 +12,7 @@ For this week, we learned about the architecture of the Cruddur app, setting up 
 ### Recreate Logical Architectual Diagram in Lucid Charts
 
 [Logical Diagram Lucid Link](https://lucid.app/lucidchart/39d35bd5-5a18-44de-aa2f-5e16be91cc5e/edit?viewport_loc=-400%2C-609%2C3487%2C1893%2C0_0&invitationId=inv_cec5b94d-947f-478e-a654-a67c5e94dd93)
-![Logical Diagram](assests/week0/Cruddur%20-%20Logical%20Diagram.png)
+![Logical Diagram](assests/week0/Cruddur%20-%20Logical%20Diagram.jpeg)
 
 ### Create an Admin User
 
@@ -85,7 +85,7 @@ We can also view the budgets on the console.
 
 ---
 
-## Stretch Goals
+## Homework Challenges
 
 ### Set IAM MFA on root and admin account
 
@@ -94,3 +94,18 @@ We can also view the budgets on the console.
 
 - On Admin Account
   ![MFA admin](assests/week0/MFA-user.png)
+
+### Use EventBridge to hookup Health Dashboard to SNS and send notification when there is a service health issue.
+
+In this part, I successfully created the eventbridge rule but I do not know how to test the AWS Health Dashboard to open an issue that will trigger the eventbridge to sent a notification on Amazon SNS.
+
+Here we can see my event rule named as **Health-Event** and the event pattern source is set to `aws.health`.
+![EventBridge-1](assests/week0/Eventbridge-1.png)
+
+We can also see the target here as the SNS Topic I created named `health-eventbridge`.
+![EventBridge-2](assests/week0/Eventbridge-2.png)
+
+### Create an architectural diagram (to the best of your ability) the CI/CD logical pipeline in Lucid Charts
+
+[CI/CD Logical Diagram Lucid Link](https://lucid.app/lucidchart/9f850bf7-19aa-49e5-a988-45324e5e6ac7/edit?view_items=C2hyuKXkKhQI&invitationId=inv_a3882301-a812-4ca9-9c76-822b1c0d9ffd)
+![CI/CD Diagram](assests/week0/Cruddur%20CI_CD%20Logical%20Diagram.png)
