@@ -27,5 +27,4 @@ tasks:
       cd $THEIA_WORKSPACE_ROOT
   - name: docker-init
     init: |
-      chmod 700 ./run.sh
-      ./run.sh
+      docker compose -f "docker-compose.yml" up -d --build
