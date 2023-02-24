@@ -3,116 +3,109 @@
 ## Required Homework
 
 ### Containerize Application
+- Added Dockerfile on backend [(commit 2d4bc87)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/2d4bc87f7dee4926d0f594baf1801af559a9f031)
+- Added Dockerfile on frontend [(commit e99542f)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/e99542fba076415abfaf098a19bccee7f93304d3)
+- Added Docker Compose [(commit d7831fd)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/d7831fd2346ff86818f0be20182b95dab447ec5d)   
+  
+### Added Notifications Endpoint for OpenAI
+- Link to [commit af86db6](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/af86db6975ea92e7be6cc85ec13a390c2fd9c44a)
 
-- Added Dockerfile on backend
-  (See [Dockerfile)](../backend-flask/Dockerfile) on /backend-flask/Dockerfile
+### Write Notifications backend endpoint
+- Link to [commit d56cd74](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/d56cd74086851d11ebde0216ad0f8e8bcb9fabbd)
 
-- Added Dockerfile on frontend
-  (See [Dockerfile](../frontend-react-js/Dockerfile) on /frontend-react-js/Dockerfile)
+### Write Notifications React Page
+- Link to [commit a7beaff](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/a7beaffd514db0c95a2dc62086270584e5e8edd6) and to [commit 3823dd2](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/3823dd2c50e5447406fc817bdd06501909088494)
 
-- Added Docker Compose
-  (See [docker-compose](../docker-compose.yml) on /docker-compose.yml)
-  
-  
-  ### Added Notifications Endpoint for OpenAI
-  - Added `/api/activities/notifications` endpoint under the `paths:` of the [openapi-3.0.yml](../backend-flask/openapi-3.0.yml) file on the backend.
-  ```yml
-  /api/activities/notifications:
-    get:
-      description: "Return a feed of activity for all of those that I follow"
-      tags:
-        - activities
-      parameters: []
-      responses:
-        "200":
-          description: "Returns an array of activities"
-          content:
-            application/json:
-              schema:
-                type: array
-                items: 
-                  $ref: '#/components/schemas/Activity'
-  ```
-  
-  ### Write Notifications backend endpoint
-  - Added `/api/activities/notifications` route on [app.py](../backend-flask/app.py) file on backend
-    ```py
-    @app.route("/api/activities/notifications", methods=['GET'])
-    def data_notifications():
-      data = NotificationsActivities.run()
-      return data, 200
-    ```
-  - Added [`notifications_activities.py`](../backend-flask/services/notifications_activities.py) file on [services](../backend-flask/services/) folder of the backend
-  
-  ### Write Notifications React Page
-  - Added the `/notifications` route on [App.js](../frontend-react-js/src/App.js) file
-    ```js
-    {
-      path: "/notifications",
-      element: <NotificationsFeedPage />
-    },
-    ```
-    
-  - Added the [`NotificationsFeedPage.js`](../frontend-react-js/src/pages/NotificationsFeedPage.js) file on the /src/pages folder of the frontend
-
-  ### Run Local DynamoDB container
-  - Added `dynamodb-local` under the `services` part in the [docker-compose.yml](../docker-compose.yml) file.
-    ```yml
-    dynamodb-local:
-      # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
-      # We needed to add user:root to get this working.
-      user: root
-      command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
-      image: "amazon/dynamodb-local:latest"
-      container_name: dynamodb-local
-      ports:
-        - "8000:8000"
-      volumes:
-        - "./docker/dynamodb:/home/dynamodblocal/data"
-      working_dir: /home/dynamodblocal
-    ```
-  - Run the `docker compose up` command and we can see below that the port `8000` is running
-    ![db-1](/assests/week1/db-1.png)
-  - Test DynamoDB locally
-    - Create Table
-      ![db-2](/assests/week1/db-2.png)
-    - Create Item
-      ![db-3](/assests/week1/db-3.png)
-    - List Tables
-      ![db-4](/assests/week1/db-4.png)
-    - Get Records
-      ![db-5](/assests/week1/db-5.png)
-  
-  ### Run Postgres Container
-  - Added `db` under the `services` part in the [docker-compose.yml](../docker-compose.yml) file.
-    ```yml
-    db:
-      image: postgres:13-alpine
-      restart: always
-      environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=password
-      ports:
-        - '5432:5432'
-      volumes: 
-        - db:/var/lib/postgresql/data
-    ```
-  - Added `volumes` in the [docker-compose.yml](../docker-compose.yml) file.
-    ```yml
-    volumes:
-      db:
-        driver: local
-    ```
-  - Run the `docker compose up` command and we can see below that the port `5432` is running
-    ![db-1](/assests/week1/db-1.png)
+### Run Local DynamoDB container and Postgres container
+- Added DynamoDB and Postgres to docker-compose.yml file [(commit 00d1feb)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/00d1feb9e517d284536f5f839cb2017000d70169)
+- Added postgres vscode extension docker-compose.yml file [(commit c262e27)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/c262e27f368cd3eb2d1305fc5e9dec17f34749c8)
+- Run the `docker compose up` command and we can see below that the port `8000` for DynamoDB and port `5432` for Postgres is running.
+  ![db-1](assests/week1/db-1.png)
+- Test DynamoDB locally
+  - Create Table
+    ![db-2](assests/week1/db-2.png)
+  - Create Item
+    ![db-3](assests/week1/db-3.png)
+  - List Tables
+    ![db-4](assests/week1/db-4.png)
+  - Get Records
+    ![db-5](assests/week1/db-5.png)
   - Connect to postgres client
-    ![db-6](/assests/week1/db-6.png)
+    ![db-6](assests/week1/db-6.png)
   - Connect to postgres cli
+
     We can see to the left that the postgres client is also connected
-    ![db-7](/assests/week1/db-7.png)
-    
+    ![db-7](assests/week1/db-7.png)
+
+---
+## Homework Challenges
+
+### Run the dockerfile CMD as an external script
+- I added scripts for the backend (backend-run.sh), frontend (frontend-run.sh) and in the .gitpod.yml file (run.sh file - which I later removed it and directly paste the command on the .gitpod.yml file) 
+  - added scripts: [(commit 70bd078)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/70bd0785eb093899ab464350c08977017d4ee52d)
+  - removed run.sh file and updated .gitpod.yml file: [(commit 300ef4e)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/300ef4e623906c1614012e3fbb354028f5fc8517)
+- Build the Dockerfiles:
+  - Backend:
+    - ![cmd-1](assests/week1/cmd-1.png)
+  - Frontend:
+    - ![cmd-2](assests/week1/cmd-2.png)
+- Run the images using the commands:
+  ```sh
+  docker container run --rm -e FRONTEND_URL='*' -e BACKEND_URL='*' -p 4567:4567 -d backend:v3
+  ```
+  ```sh
+  docker container run --rm -e REACT_APP_BACKEND_URL="https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}" -p 3000:3000 -d frontend:v2
+  ````
   
-  ## Homework Challenges
+### Push and tag a image to DockerHub
+- Login to Docker CLI
+  ```sh
+  docker login -u timmycde
+  ```
+  ![push-1](assests/week1/push-1.png)
+- Tag the images
+  - Frontend:
+    ```sh
+    docker tag <IMAGE_ID> timmycde/cruddur-frontend:latest
+    ```
+  - Backend:
+    ```sh
+    docker tag <IMAGE_ID> timmycde/cruddur-backend:latest
+    ```
+- Push the images
+  - Frontend:
+    ```sh
+    docker push timmycde/cruddur-frontend:latest
+    ```
+  - Backend:
+    ```sh
+    docker push timmycde/cruddur-backend:latest
+    ```
+- Logs
+  
+  Frontend:
+  ![push-2](assests/week1/push-2.png)
+  
+  Backend (*I made a mistake on the tag so I repeated it again*):
+  ![push-3](assests/week1/push-3.png)
+- Verify on the Docker Hub
+  
+  Docker Hub Links: [Backend](https://hub.docker.com/r/timmycde/cruddur-backend) | [Frontend](https://hub.docker.com/r/timmycde/cruddur-frontend)
+  
+  ![push-4](assests/week1/push-4.png)
+  
+### Implement healthcheck to Docker compose file
+Here I made healtchecks for the frontend and backend [commit 95e95c4](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/95e95c4f4bdedcadbff93ffb3484e446b040dce3)
+
+For some reason, I am getting unhealty status for the backend, but adding these on the `backend-run.sh` did the trick to make it healty!
+```sh
+apt-get update 
+apt-get install -y gcc
+apt-get install -y curl
+```
+
+### Install Docker and run the same containers locally
+### Run the same containers inside an EC2 instance
   
   
   
