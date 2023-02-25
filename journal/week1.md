@@ -128,7 +128,7 @@
 ### Implement healthcheck to Docker compose file
 Here I made healthchecks for the frontend and backend [commit 95e95c4](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/95e95c4f4bdedcadbff93ffb3484e446b040dce3)
 
-For some reason, I am getting unhealty status for the backend, but adding these on both of the backend and frontend `Dockerfile` did the trick to make it healty! [(commit aefae65)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/aefae654f25fe963e89c8972408f466c0235f5bb)
+For some reason, I am getting unhealty status for the backend, but adding these on both of the backend and frontend `Dockerfile` did the trick to make it healthy! [(commit aefae65)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/aefae654f25fe963e89c8972408f466c0235f5bb)
 ```Dockerfile
 RUN apt-get update 
 RUN apt-get install -y gcc
