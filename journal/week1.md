@@ -1,5 +1,15 @@
 # Week 1 — App Containerization
 
+## Table of Contents
+| Required Homework| | Homework Challenges |
+| :--- | :--- | :--- |
+| [Containerize Application](#containerize-application) | | [Run the dockerfile CMD as an external script](#run-the-dockerfile-cmd-as-an-external-script) |
+| [Added Notifications Endpoint for OpenAI](#added-notifications-endpoint-for-openai) | | [Push and tag a image to DockerHub](#push-and-tag-a-image-to-dockerhub) | 
+| [Write Notifications backend endpoint](#write-notifications-backend-endpoint) | | [Implement healthcheck to Docker compose file](#implement-healthcheck-to-docker-compose-file) |
+| [Write Notifications React Page](#write-notifications-react-page) | | [Install Docker and run the same containers locally](#install-docker-and-run-the-same-containers-locally) |
+| [Run Local DynamoDB container and Postgres container](#run-local-dynamodb-container-and-postgres-container) | | [Run the same containers inside an EC2 instance](#run-the-same-containers-inside-an-ec2-instance) |
+---
+
 ## Required Homework
 
 ### Containerize Application
