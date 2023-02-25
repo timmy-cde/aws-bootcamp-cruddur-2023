@@ -8,4 +8,7 @@ COPY . /frontend-react-js
 EXPOSE ${PORT}
 # CMD ["npm", "start"]
 RUN chmod 700 frontend-run.sh
+RUN apt-get update 
+RUN apt-get install -y gcc
+RUN apt-get install -y curl
 CMD [ "./frontend-run.sh" ]
