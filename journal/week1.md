@@ -136,7 +136,7 @@ RUN apt-get install -y curl
 ```
 
 ### Install Docker and run the same containers locally
-- Downloaded the Docker Desktop application on the [Docker Webisite](docker.com) and run the application.
+- Downloaded the Docker Desktop application on the [Docker Website](docker.com) and run the application.
 - Installed VSCode Docker Extension
 - Cloned my github repository
 - Replaced the environment variables of the `docker-compose.yml` file from `https://PORT-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}` to `http://localhost:PORT`, where PORT is **3000** for frontend and **4567** for backend.
@@ -202,13 +202,15 @@ RUN apt-get install -y curl
   - Generated a new Key Pair Login named `cruddur-docker.pem`
   - Security Group:
     - Inbound Rules: 22(ssh), 80(http), 443(https), 4567(tcp for backend), 3000(tcp for frontend)
+    
+  ![ec2-1](assests/week1/ec2-1.png)
 - I used WSL here so I copied my `cruddur-docker.pem` file to my linux folder on the WSL terminal using the command 
   ```sh
   cp /mnt/c/Users/USERNAME/Downloads/cruddur-docker.pem ./Downloads
   ```
 - Connect to EC2 instance using the command:
   ```sh
-  ssh -i "cruddur-docker.pem" ec2-user@ec2-<**PUBLIC_DNS**>.compute-1.amazonaws.com
+  ssh -i "cruddur-docker.pem" ec2-user@ec2-<PUBLIC_DNS>.compute-1.amazonaws.com
   ```
 - Updated first the system using the command:
   ```sh
@@ -235,6 +237,28 @@ RUN apt-get install -y curl
   ```sh
    sudo systemctl status docker.service
   ```
+  ```sh
+  ● docker.service - Docker Application Container Engine
+   Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; vendor preset: disabled)
+   Active: active (running) since Thu 2023-02-23 15:06:45 UTC; 2 days ago
+     Docs: https://docs.docker.com
+   Main PID: 6587 (dockerd)
+      Tasks: 10
+     Memory: 37.3M
+     CGroup: /system.slice/docker.service
+             └─6587 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock --default-ulimit n...
+  Feb 25 13:50:53 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T13:50:53.134948914Z" level=...34
+  Feb 25 13:50:53 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T13:50:53.136403357Z" level=...88
+  Feb 25 13:50:53 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T13:50:53.195345586Z" level=...e"
+  Feb 25 13:50:53 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T13:50:53.222389413Z" level=...e"
+  Feb 25 13:58:08 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T13:58:08.636446237Z" level=...63
+  Feb 25 13:58:08 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T13:58:08.687542250Z" level=...e"
+  Feb 25 14:05:44 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T14:05:44.829344467Z" level=...1e
+  Feb 25 14:05:44 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T14:05:44.831907611Z" level=...23
+  Feb 25 14:05:44 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T14:05:44.883484740Z" level=...e"
+  Feb 25 14:05:44 ip-172-31-62-220.ec2.internal dockerd[6587]: time="2023-02-25T14:05:44.945953698Z" level=...e"
+  Hint: Some lines were ellipsized, use -l to show in full.
+  ```
 - Pull my images on my dockerhub repo:
   ```sh
   sudo docker pull timmycde/cruddur-backend:latest
@@ -255,6 +279,7 @@ RUN apt-get install -y curl
   sudo docker container run --rm -e REACT_APP_BACKEND_URL="http://<EC2_PUBLIC_DNS>:4567" -p 3000:3000 -d timmycde/cruddur-frontend:latest
   ```
   > Here I struggled to make the backend connect to frontend, the problem that I found out by browsing into the network tab of the developer tools in the browser was the request link on the frontend becomes `http://<EC2_PUBLIC_DNS>:3000/<EC2_PUBLIC_DNS>:4567/api/activites/home` instead of `http://<EC2_PUBLIC_DNS>:4567/api/activites/home`. 
+  
   > I later found out my error was how I declare my **EC2 Public DNS**. Since I saved my EC2 Public DNS to an environment variable as `$HOST_URL=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)` and passing it directly to the docker `-e` option on the command causes this error (my command was `-e REACT_APP_BACKEND_URL="$HOST_URL:3000"`. So I tried to manually type the EC2 PUBLIC DNS directly on the command and it worked!
 - Verify the containers are running:
   ```sh
