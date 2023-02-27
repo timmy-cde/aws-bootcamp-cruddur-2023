@@ -25,6 +25,3 @@ tasks:
       cd ./frontend-react-js
       npm install
       cd $THEIA_WORKSPACE_ROOT
-  - name: docker-init
-    init: |
-      docker compose -f "docker-compose.yml" up -d --build
