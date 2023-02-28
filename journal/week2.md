@@ -6,7 +6,7 @@
 | [Instrument Honeycomb with OTEL](#instrument-honeycomb-with-otel) | | [Instrument Honeycomb for frontend and backend](#instrument-honeycomb-for-frontend-and-backend) |
 | [Instrument AWS X-Ray](#instrument-aws-x-ray) | | [Add custom instrumentation to Honeycomb](#add-custom-instrumentation-to-honeycomb) | 
 | [Configure custom logger to send to CloudWatch Logs](#configure-custom-logger-to-send-to-cloudwatch-logs) | | [Run custom queries in Honeycomb and save them later](#run-custom-queries-in-honeycomb-and-save-them-later) |
-| [Integrate Rollbar and capture error](#integrate-rollbar-and-capture-error) | | |
+| [Integrate Rollbar and capture error](#integrate-rollbar-and-capture-error) | | [Added custom subsegment annotations in X-Ray](#added-custom-subsegment-annotations-in-xray)|
 ---
 
 ## Required Homework
@@ -135,3 +135,6 @@ caused by: Get "http://169.254.169.254/latest/meta-data/instance-id": context de
 ###  Instrument Honeycomb for frontend and backend
 ### Add custom instrumentation to Honeycomb
 ### Run custom queries in Honeycomb and save them later
+### Added custom subsegment annotations in X-Ray
+![image](https://user-images.githubusercontent.com/71366703/221872567-d92f0a38-4e70-4633-a018-2dd40fa8bb86.png)
+
