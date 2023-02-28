@@ -126,6 +126,8 @@ caused by: Get "http://169.254.169.254/latest/meta-data/instance-id": context de
 ```
 
 ### Configure custom logger to send to CloudWatch Logs
+![image](https://user-images.githubusercontent.com/71366703/221897217-10652f0a-b329-4890-bb4e-8a756876c6ce.png)
+
 ### Integrate Rollbar and capture error
 
 ---
