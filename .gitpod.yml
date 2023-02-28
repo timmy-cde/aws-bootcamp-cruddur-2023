@@ -4,6 +4,8 @@ vscode:
     - ms-azuretools.vscode-docker
     - cweijan.vscode-postgresql-client2
 
+    - dez64ru.macos-modern-theme
+
 tasks:
   - name: aws-cli
     env:
