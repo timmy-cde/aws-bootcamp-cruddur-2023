@@ -45,78 +45,81 @@
   ![image](https://user-images.githubusercontent.com/71366703/221764994-688f55a0-3142-4da8-8f59-f5b40b2f4570.png)
   ![image](https://user-images.githubusercontent.com/71366703/221767333-d4a01f19-c25f-49d4-995e-9ab75818eba1.png)
 
-- Add spans and attributes in `home_activities.py` file [commit 038d69f](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/038d69f6f0e34718956546c2f3c25135da8ed9d1)
+- Add spans and attributes in `home_activities.py` file [(commit 038d69f)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/038d69f6f0e34718956546c2f3c25135da8ed9d1)
 - Rerun the docker and run a new query in honeycomb
   
   ![image](https://user-images.githubusercontent.com/71366703/221766983-10359f0b-dbcc-453f-a55c-1b2fb916909f.png)
+  ![image](https://user-images.githubusercontent.com/71366703/222111926-431d946f-6c44-4d73-a44d-273d4dd06f4e.png)
   
 ### Instrument AWS X-Ray
 - Added X-Ray SDK to `requirements.txt`, sample (xray.json) and code in `app.py` file [(commit 827d657)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/827d65726eed98dfd00d4ce407e918acb10d2ed6)
 - Added X-Ray env variable in backend-flask part of the `docker-compose.yml` file and the X-Ray daemon image [(commit 69f7965)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/69f796504e05313380644659c55a93db409e8619)
 - Create an x-ray group
  
- ```sh
- gitpod /workspace/aws-bootcamp-cruddur-2023/backend-flask (week2) $ aws xray create-group \
- >    --group-name "Cruddur" \
- >    --filter-expression "service(\"backend-flask\")"
- {
-     "Group": {
-         "GroupName": "Cruddur",
-         "GroupARN": "arn:aws:xray:us-east-1:532819517439:group/Cruddur/JRXLD4GZE4KR6YIQ3JOSRGF4NSVYJZE6SWRQ2SXYPAQZCSH7I5SA",
-         "FilterExpression": "service(\"backend-flask\")\n",
-         "InsightsConfiguration": {
-             "InsightsEnabled": false,
-             "NotificationsEnabled": false
-         }
-     }
- }
- ```
- ![image](https://user-images.githubusercontent.com/71366703/222108347-e867c8b1-160b-4355-ba26-53ca23efb894.png)
-- Create Sampling Rule
- 
- ```sh
- gitpod /workspace/aws-bootcamp-cruddur-2023 (week2) $ aws xray create-sampling-rule --cli-input-json file://aws/json/xray.json
- {
-     "SamplingRuleRecord": {
-         "SamplingRule": {
-             "RuleName": "Cruddur",
-             "RuleARN": "arn:aws:xray:us-east-1:532819517439:sampling-rule/Cruddur",
-             "ResourceARN": "*",
-             "Priority": 9000,
-             "FixedRate": 0.1,
-             "ReservoirSize": 5,
-             "ServiceName": "blackend-flask",
-             "ServiceType": "*",
-             "Host": "*",
-             "HTTPMethod": "*",
-             "URLPath": "*",
-             "Version": 1,
-             "Attributes": {}
-         },
-         "CreatedAt": "2023-02-28T09:09:46+00:00",
-         "ModifiedAt": "2023-02-28T09:09:46+00:00"
-     }
- }
- ```
- ![image](https://user-images.githubusercontent.com/71366703/222108591-c9c8e212-73e7-4126-beca-c8acc75dd042.png)
+  ```sh
+  gitpod /workspace/aws-bootcamp-cruddur-2023/backend-flask (week2) $ aws xray create-group \
+  >    --group-name "Cruddur" \
+  >    --filter-expression "service(\"backend-flask\")"
+  {
+      "Group": {
+          "GroupName": "Cruddur",
+          "GroupARN": "arn:aws:xray:us-east-1:XXXXXXXX7439:group/Cruddur/JRXLD4GZE4KR6YIQ3JOSRGF4NSVYJZE6SWRQ2SXYPAQZCSH7I5SA",
+          "FilterExpression": "service(\"backend-flask\")\n",
+          "InsightsConfiguration": {
+              "InsightsEnabled": false,
+              "NotificationsEnabled": false
+          }
+      }
+  }
+  ```
+  ![image](https://user-images.githubusercontent.com/71366703/222108347-e867c8b1-160b-4355-ba26-53ca23efb894.png)
+ - Create Sampling Rule
 
-- Run the docker compose file and see the logs in x-ray container and in the aws console.
- 
- ```sh
-  *  Executing task: docker logs --tail 1000 -f f665b79290f3c35f47d5c6842ee9361af71a23f21bf99791c34ac846b1945d6d 
+    ```sh
+    gitpod /workspace/aws-bootcamp-cruddur-2023 (week2) $ aws xray create-sampling-rule --cli-input-json file://aws/json/xray.json
+    {
+        "SamplingRuleRecord": {
+            "SamplingRule": {
+                "RuleName": "Cruddur",
+                "RuleARN": "arn:aws:xray:us-east-1:532819517439:sampling-rule/Cruddur",
+                "ResourceARN": "*",
+                "Priority": 9000,
+                "FixedRate": 0.1,
+                "ReservoirSize": 5,
+                "ServiceName": "blackend-flask",
+                "ServiceType": "*",
+                "Host": "*",
+                "HTTPMethod": "*",
+                "URLPath": "*",
+                "Version": 1,
+                "Attributes": {}
+            },
+            "CreatedAt": "2023-02-28T09:09:46+00:00",
+            "ModifiedAt": "2023-02-28T09:09:46+00:00"
+        }
+    }
+    ```
+    ![image](https://user-images.githubusercontent.com/71366703/222108591-c9c8e212-73e7-4126-beca-c8acc75dd042.png)
 
- 2023-02-28T09:22:50Z [Info] Initializing AWS X-Ray daemon 3.3.6
- 2023-02-28T09:22:50Z [Info] Using buffer memory limit of 643 MB
- 2023-02-28T09:22:50Z [Info] 10288 segment buffers allocated
- 2023-02-28T09:22:50Z [Info] Using region: us-east-1
- 2023-02-28T09:22:59Z [Error] Get instance id metadata failed: RequestError: send request failed
- caused by: Get "http://169.254.169.254/latest/meta-data/instance-id": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
- 2023-02-28T09:22:59Z [Info] HTTP Proxy server using X-Ray Endpoint : https://xray.us-east-1.amazonaws.com
- 2023-02-28T09:22:59Z [Info] Starting proxy http server on 0.0.0.0:2000
- 2023-02-28T09:23:52Z [Info] Successfully sent batch of 1 segments (0.404 seconds)
- 2023-02-28T09:24:01Z [Info] Successfully sent batch of 1 segments (0.066 seconds)
- 2023-02-28T09:24:11Z [Info] Successfully sent batch of 1 segments (0.082 seconds)
- ```
+  - Run the docker compose file and see the logs in x-ray container and in the aws console.
+
+    ```sh
+     *  Executing task: docker logs --tail 1000 -f f665b79290f3c35f47d5c6842ee9361af71a23f21bf99791c34ac846b1945d6d 
+
+    2023-02-28T09:22:50Z [Info] Initializing AWS X-Ray daemon 3.3.6
+    2023-02-28T09:22:50Z [Info] Using buffer memory limit of 643 MB
+    2023-02-28T09:22:50Z [Info] 10288 segment buffers allocated
+    2023-02-28T09:22:50Z [Info] Using region: us-east-1
+    2023-02-28T09:22:59Z [Error] Get instance id metadata failed: RequestError: send request failed
+    caused by: Get "http://169.254.169.254/latest/meta-data/instance-id": context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+    2023-02-28T09:22:59Z [Info] HTTP Proxy server using X-Ray Endpoint : https://xray.us-east-1.amazonaws.com
+    2023-02-28T09:22:59Z [Info] Starting proxy http server on 0.0.0.0:2000
+    2023-02-28T09:23:52Z [Info] Successfully sent batch of 1 segments (0.404 seconds)
+    2023-02-28T09:24:01Z [Info] Successfully sent batch of 1 segments (0.066 seconds)
+    2023-02-28T09:24:11Z [Info] Successfully sent batch of 1 segments (0.082 seconds)
+    ```
+    ![image](https://user-images.githubusercontent.com/71366703/222110693-24644109-c150-4eb1-ae42-8edf502541f0.png)
+
 
 ### Configure custom logger to send to CloudWatch Logs
 ![image](https://user-images.githubusercontent.com/71366703/221897217-10652f0a-b329-4890-bb4e-8a756876c6ce.png)
