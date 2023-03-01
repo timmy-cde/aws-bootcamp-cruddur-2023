@@ -81,7 +81,7 @@
         "SamplingRuleRecord": {
             "SamplingRule": {
                 "RuleName": "Cruddur",
-                "RuleARN": "arn:aws:xray:us-east-1:532819517439:sampling-rule/Cruddur",
+                "RuleARN": "arn:aws:xray:us-east-1:XXXXXXXX7439:sampling-rule/Cruddur",
                 "ResourceARN": "*",
                 "Priority": 9000,
                 "FixedRate": 0.1,
@@ -127,6 +127,14 @@
   ![image](https://user-images.githubusercontent.com/71366703/221897217-10652f0a-b329-4890-bb4e-8a756876c6ce.png)
 
 ### Integrate Rollbar and capture error
+- Added rollbar dependencies on `requirements.txt`, added rollbar on `app.py`, added environment variable for **ROLLBAR_ACCESS_TOKEN** in gitpod env and in `docker-compose.yml` file [(commit ebfc358)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/ebfc358450e609bea2bc92d3f4576e36e0af6739?diff=split)
+- First tested the error using the `rollbar/test` endpoint
+
+  ![image](https://user-images.githubusercontent.com/71366703/222164526-e87f213d-c533-4564-ba6a-b92fa1de84ce.png)
+- Tested the error by removing `return` in `home_activities.py` file.
+  
+  ![image](https://user-images.githubusercontent.com/71366703/222164893-f7482fff-b318-45b1-b855-a623275fee9f.png)
+  ![image](https://user-images.githubusercontent.com/71366703/222164714-7f962e72-8aad-481a-8586-dba80d15fb0a.png)
 
 ---
 
