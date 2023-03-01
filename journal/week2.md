@@ -122,7 +122,9 @@
 
 
 ### Configure custom logger to send to CloudWatch Logs
-![image](https://user-images.githubusercontent.com/71366703/221897217-10652f0a-b329-4890-bb4e-8a756876c6ce.png)
+- Added Watchtower dependency in `requirements.txt` file, added loggers in `app.py`, `home_activities.py` and `user_activities.py` [(commit 2173250)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/21732506634a3e948da251c9a67d0c20ca0de692)
+- Run the doccker-compose file and see the logs in CloudWatch.
+  ![image](https://user-images.githubusercontent.com/71366703/221897217-10652f0a-b329-4890-bb4e-8a756876c6ce.png)
 
 ### Integrate Rollbar and capture error
 
