@@ -144,6 +144,6 @@
 ### Add custom instrumentation to Honeycomb
 ### Run custom queries in Honeycomb and save them later
 ### Added custom subsegment annotations in X-Ray
-![image](https://user-images.githubusercontent.com/71366703/221891878-f4a45f79-8769-409d-a47f-108e873826d0.png)
+![image](https://user-images.githubusercontent.com/71366703/222373093-4cb3aebb-ef3f-46cd-a3df-10920311335d.png)
 
 
