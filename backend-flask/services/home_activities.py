@@ -49,5 +49,10 @@ class HomeActivities:
         'replies': []
       }
       ]
+      for message in results:
+        span.set_attribute("UserId", message['uuid'])
+        span.set_attribute("User", message['handle'])
+        span.set_attribute("message", message['message'])
+        
       span.set_attribute("app.result_length", len(results))
       return results
