@@ -49,5 +49,12 @@ class HomeActivities:
         'replies': []
       }
       ]
+      
+      span.set_attribute("result.now", now.isoformat())
+      for index in range(len(results)):
+        name = f"result-{index}"
+        res = f"user: {results[index]['handle']}, message: {results[index]['message']}"
+        span.set_attribute(name, res)
+
       span.set_attribute("app.result_length", len(results))
       return results
