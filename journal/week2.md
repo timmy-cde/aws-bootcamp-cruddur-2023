@@ -141,6 +141,17 @@
 ## Homework Challenges
 
 ###  Instrument Honeycomb for frontend and backend
+```sh
+npm install --save \
+    @opentelemetry/api \
+    @opentelemetry/sdk-trace-web \
+    @opentelemetry/exporter-trace-otlp-http \
+    @opentelemetry/context-zone \
+
+    @opentelemetry/instrumentation \
+    @opentelemetry/instrumentation-xml-http-request \
+    @opentelemetry/instrumentation-fetch
+```
 ### Add custom instrumentation to Honeycomb
 - Added the attributes user and message in `/api/activities/home` endpoint [(commit cd3ffa3)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/cd3ffa3c77e6609cb1d8dc9ba2767c27ab61b1ec)
   
