@@ -142,7 +142,14 @@
 
 ###  Instrument Honeycomb for frontend and backend
 ### Add custom instrumentation to Honeycomb
+- Added the attributes user and message in `/api/activities/home` endpoint [(commit cd3ffa3)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/cd3ffa3c77e6609cb1d8dc9ba2767c27ab61b1ec)
+  
+  ![image](https://user-images.githubusercontent.com/71366703/222642934-f2e15be9-dbad-40d3-8163-e7db57b566c5.png)
+
 ### Run custom queries in Honeycomb and save them later
+- Run queries and saved them to the `backed queries` board.
+  
+  ![image](https://user-images.githubusercontent.com/71366703/222644695-db3a1ced-0ff6-4082-ab6d-922e5432140d.png)
 ### Added custom subsegment annotations in X-Ray
 ![image](https://user-images.githubusercontent.com/71366703/222373093-4cb3aebb-ef3f-46cd-a3df-10920311335d.png)
 
