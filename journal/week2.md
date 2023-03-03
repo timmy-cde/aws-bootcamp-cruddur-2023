@@ -149,6 +149,7 @@
 ### Run custom queries in Honeycomb and save them later
 - Run queries and saved them to the `backed queries` board.
   
+  ![image](https://user-images.githubusercontent.com/71366703/222646173-309a0909-c9fa-4775-834b-43e44138660c.png)
   ![image](https://user-images.githubusercontent.com/71366703/222644695-db3a1ced-0ff6-4082-ab6d-922e5432140d.png)
 ### Added custom subsegment annotations in X-Ray
 ![image](https://user-images.githubusercontent.com/71366703/222373093-4cb3aebb-ef3f-46cd-a3df-10920311335d.png)
