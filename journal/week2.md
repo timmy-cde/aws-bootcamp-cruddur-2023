@@ -141,6 +141,19 @@
 ## Homework Challenges
 
 ###  Instrument Honeycomb for frontend and backend
+- Installed dependencies on 
+  ```sh
+  npm install --save \
+      @opentelemetry/api \
+      @opentelemetry/sdk-trace-web \
+      @opentelemetry/exporter-trace-otlp-http \
+      @opentelemetry/context-zone \
+
+      @opentelemetry/instrumentation \
+      @opentelemetry/instrumentation-xml-http-request \
+      @opentelemetry/instrumentation-fetch
+  ```
+- Added the codes for honeycomb on frontend, currently debugging cors [(commit 6d84c56)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/6d84c56ea06770e4a0f09a6c32e96607fe915c25) [(commit 3e57107)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/3e57107e7ffc48b60b80ab1e92f0bbffb5c6dd12)
 ### Add custom instrumentation to Honeycomb
 - Added the attributes user and message in `/api/activities/home` endpoint [(commit cd3ffa3)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/cd3ffa3c77e6609cb1d8dc9ba2767c27ab61b1ec)
   
@@ -152,6 +165,12 @@
   ![image](https://user-images.githubusercontent.com/71366703/222646173-309a0909-c9fa-4775-834b-43e44138660c.png)
   ![image](https://user-images.githubusercontent.com/71366703/222644695-db3a1ced-0ff6-4082-ab6d-922e5432140d.png)
 ### Added custom subsegment annotations in X-Ray
-![image](https://user-images.githubusercontent.com/71366703/222373093-4cb3aebb-ef3f-46cd-a3df-10920311335d.png)
+- Using `xray_recorder.begin_subsegment` and `xray_recorder.end_subsegment` only [(commit 2916e8b)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/2916e8bc9aeed93f0ada47107d39477a7ec880af)
+
+  ![image](https://user-images.githubusercontent.com/71366703/222373093-4cb3aebb-ef3f-46cd-a3df-10920311335d.png)
+- Using Andrew's way (adding of `@xray_recorder.capture` on app.py) [(commit 5805172)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/5805172a42a6da9d9f7b6cc8d5be67205c8e3815)
+  
+  ![image](https://user-images.githubusercontent.com/71366703/222904340-7d2e27bf-a5f8-48f6-9358-12149ad7b10f.png)
+
 
 
