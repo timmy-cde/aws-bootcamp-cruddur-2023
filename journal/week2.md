@@ -163,6 +163,12 @@ npm install --save \
   ![image](https://user-images.githubusercontent.com/71366703/222646173-309a0909-c9fa-4775-834b-43e44138660c.png)
   ![image](https://user-images.githubusercontent.com/71366703/222644695-db3a1ced-0ff6-4082-ab6d-922e5432140d.png)
 ### Added custom subsegment annotations in X-Ray
-![image](https://user-images.githubusercontent.com/71366703/222373093-4cb3aebb-ef3f-46cd-a3df-10920311335d.png)
+- Using `xray_recorder.begin_subsegment` and `xray_recorder.end_subsegment` only [(commit 2916e8b)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/2916e8bc9aeed93f0ada47107d39477a7ec880af)
+
+  ![image](https://user-images.githubusercontent.com/71366703/222373093-4cb3aebb-ef3f-46cd-a3df-10920311335d.png)
+- Using Andrew's way (adding of `@xray_recorder.capture` on app.py) [(commit 5805172)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/5805172a42a6da9d9f7b6cc8d5be67205c8e3815)
+  
+  ![image](https://user-images.githubusercontent.com/71366703/222904340-7d2e27bf-a5f8-48f6-9358-12149ad7b10f.png)
+
 
 
