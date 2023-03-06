@@ -39,6 +39,6 @@ registerInstrumentations({
       ]
     }),
     new DocumentLoadInstrumentation(),
-    new UserInteractionInstrumentation(),
+    // new UserInteractionInstrumentation(),
   ],
 });
