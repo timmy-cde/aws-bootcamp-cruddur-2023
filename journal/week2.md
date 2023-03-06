@@ -141,19 +141,136 @@
 ## Homework Challenges
 
 ###  Instrument Honeycomb for frontend and backend
-- Installed dependencies on 
+- Install honeycomb dependencies on the frontend
   ```sh
   npm install --save \
       @opentelemetry/api \
       @opentelemetry/sdk-trace-web \
       @opentelemetry/exporter-trace-otlp-http \
       @opentelemetry/context-zone \
-
       @opentelemetry/instrumentation \
       @opentelemetry/instrumentation-xml-http-request \
-      @opentelemetry/instrumentation-fetch
+      @opentelemetry/instrumentation-fetch \
+      @opentelemetry/instrumentation-document-load \
+      @opentelemetry/instrumentation-user-interaction \
+      @opentelemetry/instrumentation-long-task
   ```
-- Added the codes for honeycomb on frontend, currently debugging cors [(commit 6d84c56)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/6d84c56ea06770e4a0f09a6c32e96607fe915c25) [(commit 3e57107)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/3e57107e7ffc48b60b80ab1e92f0bbffb5c6dd12)
+- Create `tracing.js` file inside the `frontend-react-js/src` for the otel initialization
+  ```js
+  import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
+  import { WebTracerProvider, BatchSpanProcessor } from '@opentelemetry/sdk-trace-web';
+  import { ZoneContextManager } from '@opentelemetry/context-zone';
+  import { Resource }  from '@opentelemetry/resources';
+  import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+  import { XMLHttpRequestInstrumentation } from '@opentelemetry/instrumentation-xml-http-request';
+  import { FetchInstrumentation } from '@opentelemetry/instrumentation-fetch';
+  import { registerInstrumentations } from '@opentelemetry/instrumentation';
+  import { DocumentLoadInstrumentation } from '@opentelemetry/instrumentation-document-load';
+  import { UserInteractionInstrumentation } from '@opentelemetry/instrumentation-user-interaction';
+
+  const exporter = new OTLPTraceExporter({
+    url: `${process.env.REACT_APP_OTEL_COLLECTOR_URL}/v1/traces`,
+  });
+
+  const provider = new WebTracerProvider({
+    resource: new Resource({
+      [SemanticResourceAttributes.SERVICE_NAME]: 'frontend',
+    }),
+  });
+
+  provider.addSpanProcessor(new BatchSpanProcessor(exporter));
+  provider.register({
+    contextManager: new ZoneContextManager()
+  });
+
+  registerInstrumentations({
+    instrumentations: [
+      new XMLHttpRequestInstrumentation({
+        propagateTraceHeaderCorsUrls: [
+          new RegExp(`${process.env.REACT_APP_BACKEND_URL}`, 'g')
+          // /^https:\/\/4567-[a-z0-9]+-[a-z0-9]+-[a-z0-9].+[a-z0-9]+\.gitpod\.io\//g
+        ]
+      }),
+      new FetchInstrumentation({
+        propagateTraceHeaderCorsUrls: [
+          new RegExp(`${process.env.REACT_APP_BACKEND_URL}`, 'g')
+          // /^https:\/\/4567-[a-z0-9]+-[a-z0-9]+-[a-z0-9].+[a-z0-9]+\.gitpod\.io\//g
+        ]
+      }),
+      new DocumentLoadInstrumentation(),
+      // new UserInteractionInstrumentation(),
+    ],
+  });
+  ```
+- Create `otel-collector-config.yaml` for the configuration of the otel
+  ```yaml
+  receivers:
+  otlp:
+    protocols:
+      http: # port 4318
+        # include_metadata: true
+        cors:
+          allowed_origins:
+            - "${REACT_APP_FRONTEND_URL_HTTP}"
+            - "${REACT_APP_FRONTEND_URL_HTTPS}"
+            # - "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+            # - "http://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+          allowed_headers:
+            - '*'
+
+   processors:
+     batch:
+
+   exporters:
+     otlp:
+       endpoint: "api.honeycomb.io:443"
+       headers:
+         "x-honeycomb-team": "${HONEYCOMB_API_KEY}"
+     logging:
+       loglevel: debug
+
+   service:
+     pipelines:
+       traces:
+         receivers: [otlp]
+         processors: [batch]
+         exporters: [otlp]
+  ```
+- In the backend, add `traceparent` in the `allowed_headers` of the `app.py` file to connect the backend and frontend tracing requests
+  ```py
+  cors = CORS(
+    app,
+    resources={r"/api/*": {"origins": origins}},
+    expose_headers="location,link",
+    allow_headers=["content-type", "if-modified-since", "traceparent"],
+    methods="OPTIONS,GET,HEAD,POST"
+  )
+  ```
+- Add the otel image in the `docker-compose.yml` file
+  ```yml
+  otel-collector:
+    environment:
+      REACT_APP_FRONTEND_URL_HTTP: "http://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      REACT_APP_FRONTEND_URL_HTTPS: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      HONEYCOMB_API_KEY: "${HONEYCOMB_API_KEY}"
+    image: otel/opentelemetry-collector
+    command: [--config=/etc/otel-collector-config.yaml]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - 4318:4318 # OTLP http receive
+  ```
+> I struggled to debug the honeycomb on frontend. First was my otel request url became `${FRONTEND_URL}/undefined/v1/traces` instead of the `${OTEL_COLLECTOR}/v1/traces`, I honestly do not know how I resolved it at this point, but at some point of my debugging it got the correct request url for the otel collector. My next bug was resolving the cors error for the otel_collector which I later resolved by unlocking the otel_collector port `4318` in the ports tab.
+- We can now see the tracing works!
+  ![image](https://user-images.githubusercontent.com/71366703/223167408-ec5c8b07-c285-408d-af83-05447bb36949.png)
+- Set the port `4318` to be automatically unlock when the docker runs in `.gitpod.yml` file
+  ```yml
+  ports:
+  - name: otel-http-exporter
+  port: 4318
+  visibility: public
+  ```
+
 ### Add custom instrumentation to Honeycomb
 - Added the attributes user and message in `/api/activities/home` endpoint [(commit cd3ffa3)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/cd3ffa3c77e6609cb1d8dc9ba2767c27ab61b1ec)
   
