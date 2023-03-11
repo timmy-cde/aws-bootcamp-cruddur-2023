@@ -30,8 +30,8 @@ services:
       REACT_APP_OTEL_COLLECTOR_URL: "https://4318-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       REACT_APP_AWS_PROJECT_REGION: "${AWS_DEFAULT_REGION}"
       REACT_APP_AWS_COGNITO_REGION: "${AWS_DEFAULT_REGION}"
-      REACT_APP_AWS_USER_POOLS_ID: "us-east-1_8YGkJm77L"
-      REACT_APP_CLIENT_ID: "miacdu3daqtueusal0b25i8n7"
+      REACT_APP_AWS_USER_POOLS_ID: "us-east-1_bnfXCOI56"
+      REACT_APP_CLIENT_ID: "7gojn9iqpjabsdsq7q18a5i24l"
     build: ./frontend-react-js
     ports:
       - "3000:3000"
