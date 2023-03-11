@@ -28,10 +28,10 @@ services:
     environment:
       REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       REACT_APP_OTEL_COLLECTOR_URL: "https://4318-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
-      REACT_APP_PROJECT_REGION: "${AWS_DEFAULT_REGION}"
+      REACT_APP_AWS_PROJECT_REGION: "${AWS_DEFAULT_REGION}"
       REACT_APP_AWS_COGNITO_REGION: "${AWS_DEFAULT_REGION}"
-      REACT_APP_AWS_USER_POOLS_ID: "us-east-1_2hn6Sx5Bf"
-      REACT_APP_CLIENT_ID: "7ab9kptmj98m7noh1rt16cr455"
+      REACT_APP_AWS_USER_POOLS_ID: "us-east-1_8YGkJm77L"
+      REACT_APP_CLIENT_ID: "miacdu3daqtueusal0b25i8n7"
     build: ./frontend-react-js
     ports:
       - "3000:3000"
@@ -60,7 +60,7 @@ services:
       REACT_APP_FRONTEND_URL_HTTPS: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       HONEYCOMB_API_KEY: "${HONEYCOMB_API_KEY}"
     image: otel/opentelemetry-collector
-    command: [--config=/etc/otel-collector-config.yaml]
+    command: [ --config=/etc/otel-collector-config.yaml ]
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
@@ -85,12 +85,12 @@ services:
       - POSTGRES_PASSWORD=password
     ports:
       - '5432:5432'
-    volumes: 
+    volumes:
       - db:/var/lib/postgresql/data
 
 # the name flag is a hack to change the default prepend folder
 # name when outputting the image names
-networks: 
+networks:
   internal-network:
     driver: bridge
     name: cruddur
