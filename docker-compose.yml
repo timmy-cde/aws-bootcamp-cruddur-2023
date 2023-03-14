@@ -1,5 +1,6 @@
 version: "3.8"
 services:
+
   backend-flask:
     environment:
       FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
@@ -26,6 +27,7 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
+
   frontend-react-js:
     environment:
       REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
@@ -46,6 +48,17 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
+
+  nodejs-sidecar:
+    environment:
+      BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+    build: ./jwt-node-sidecar
+    ports:
+      - 4000:4000
+    volumes:
+      - ./jwt-node-sidecar:/jwt-node-sidecar
+      - /jwt-node-sidecar/node_modules
+
   xray-daemon:
     image: "amazon/aws-xray-daemon"
     environment:
@@ -56,6 +69,7 @@ services:
       - "xray -o -b xray-daemon:2000"
     ports:
       - 2000:2000/udp
+
   otel-collector:
     environment:
       REACT_APP_FRONTEND_URL_HTTP: "http://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
@@ -67,6 +81,7 @@ services:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
       - 4318:4318 # OTLP http receiver
+
   dynamodb-local:
     # https://stackoverflow.com/questions/67533058/persist-local-dynamodb-data-in-volumes-lack-permission-unable-to-open-databa
     # We needed to add user:root to get this working.
@@ -79,6 +94,7 @@ services:
     volumes:
       - "./docker/dynamodb:/home/dynamodblocal/data"
     working_dir: /home/dynamodblocal
+
   db:
     image: postgres:13-alpine
     restart: always
