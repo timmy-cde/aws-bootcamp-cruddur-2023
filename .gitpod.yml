@@ -34,16 +34,19 @@ tasks:
       cd $THEIA_WORKSPACE_ROOT
 
 ports:
-- name: frontend
-  port: 3000
-  onOpen: open-browser
-  visibility: public
-- name: backend
-  port: 4567
-  visibility: public
-- name: xray-daemon
-  port: 2000
-  visibility: public
-- name: otel-http-exporter
-  port: 4318
-  visibility: public
+  - name: frontend
+    port: 3000
+    onOpen: open-browser
+    visibility: public
+  - name: backend
+    port: 4567
+    visibility: public
+  - name: xray-daemon
+    port: 2000
+    visibility: public
+  - name: otel-http-exporter
+    port: 4318
+    visibility: public
+  - name: nodejs-sidecar
+    port: 4000
+    visibility: public
