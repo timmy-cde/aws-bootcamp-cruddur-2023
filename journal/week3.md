@@ -3,7 +3,7 @@
 ## Table of Contents
 | Required Homework | | Homework Challenge|
 | :--- | :--- | :--- |
-| [Set up Cognito User Pool](#set-up-cognito-user-pool) | |
+| [Set up Cognito User Pool](#set-up-cognito-user-pool) | | [Beautify Forgot Page](#beautify-forgot-page) |
 | [Implement Custom Sign-In Page](#implement-custom-sign-in-page) | |
 | [Implement Custom Sign-Up Page and Custom Confirmation Page](#implement-custom-sign-up-page-and-custom-confirmation-page) | |
 | [Implement Custom Recovery Page](#implement-custom-recovery-page)| |
@@ -80,3 +80,6 @@
 ---
 
 ## Homework Challenges
+
+### Beautify Forgot Page
+- Added styles on the last part of forgot page [(commit d4bd01a)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/d4bd01af53609c8e5be1580189b8b6365a84c161)
