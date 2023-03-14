@@ -116,6 +116,13 @@
       - ./jwt-node-sidecar:/jwt-node-sidecar
       - /jwt-node-sidecar/node_modules
   ```
+- I also added on `.gitpod.yml` file the port 4000 to be public
+  ```yml
+    ports:
+      - name: nodejs-sidecar
+        port: 4000
+        visibility: public
+    ```
 - Back to the `jwt-node-sidecar` folder, I initialize a node project using `npm init` and installed dependencies
   ```sh
   npm install aws-jwt-verify express cors
