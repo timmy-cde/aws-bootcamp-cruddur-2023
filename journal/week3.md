@@ -102,8 +102,12 @@
   RUN npm install
   CMD ["npx", "nodemon", "index.js"]
   ```
-- I also added the Dockerfile to build in the `docker-compose.yml` file
+- I also added the Dockerfile to build in the `docker-compose.yml` file and the *SIDECAR_URL* on the backend part
   ```yml
+  backend-flask:
+    environment:
+       SIDECAR_URL: "https://4000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+  
   nodejs-sidecar:
     environment:
       BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
