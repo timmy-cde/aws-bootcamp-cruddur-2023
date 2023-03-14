@@ -172,12 +172,17 @@ def data_home():
     # access_token = CognitoJwtToken.extract_access_token(request.headers)
     try:
     #   claims = cognito_jwt_token.verify(access_token)
-      claims = requests.get(os.getenv("SIDECAR_URL"), )
+    #   app.logger.debug('headers-------')
+    #   app.logger.debug(request.headers["Authorization"])
+      data = {"auth": request.headers["Authorization"]}
+    #   print(dict(request.headers)) 
+      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
+      claims_json = claims.json()
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims)
-      app.logger.debug(claims['username'])
-      data = HomeActivities.run(cognito_user_id=claims['username'])
+      app.logger.debug(claims_json)
+      app.logger.debug(claims_json['username'])
+      data = HomeActivities.run(cognito_user_id=claims_json['username'])
     # except TokenVerifyError as e:
     except Exception as e:
       # _ = request.data

@@ -14,21 +14,23 @@ const jwtVerifier = CognitoJwtVerifier.create({
     userPoolId: process.env.AWS_USER_POOLS_ID,
     tokenUse: "access",
     clientId: process.env.APP_CLIENT_ID,
-    scope: "read",
 });
 
 app.get("/", async (req, res, next) => {
-    console.log("----node-sidecar start----")
+    // console.log("----node-sidecar start----")
     try {
         // A valid JWT is expected in the HTTP header "authorization"
-        console.log(req.headers)
-        await jwtVerifier.verify(req.header("authorization"));
+        token = req.body.auth.split(' ')
+        access_token = token[1]
+        const claims = await jwtVerifier.verify(access_token);
+        res.json(claims)
     } catch (err) {
         console.error(err);
         return res.status(403).json({ statusCode: 403, message: "Forbidden" });
     }
-    console.log("----node-sidecar end----")
-    res.json({ private: "only visible to users sending a valid JWT" });
+    // console.log("----node-sidecar end----")
+
+    // res.json({ private: "only visible to users sending a valid JWT" });
 });
 
 // Hydrate the JWT verifier, then start express.
