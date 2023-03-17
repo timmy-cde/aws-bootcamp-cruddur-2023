@@ -170,19 +170,23 @@ def data_create_message():
 @xray_recorder.capture('activities_home')
 def data_home():
     # access_token = CognitoJwtToken.extract_access_token(request.headers)
+    # print(dict(request.headers))
+    # print(request)
     try:
-    #   claims = cognito_jwt_token.verify(access_token)
-    #   app.logger.debug('headers-------')
-    #   app.logger.debug(request.headers["Authorization"])
-      data = {"auth": request.headers["Authorization"]}
+    # #   claims = cognito_jwt_token.verify(access_token)
+    # #   app.logger.debug('headers-------')
+    # #   app.logger.debug(request.headers["Authorization"])
+    #   data = {"auth": request.headers["Authorization"]}
+    #   print(request.headers["Authorization"])
     #   print(dict(request.headers)) 
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
-      # authenticated request
-      app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      app.logger.debug(claims_json['username'])
-      data = HomeActivities.run(cognito_user_id=claims_json['username'])
+    #   claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
+    #   claims_json = claims.json()
+    #   # authenticated request
+    #   app.logger.debug('authenticated')
+    #   app.logger.debug(claims_json)
+    #   app.logger.debug(claims_json['username'])
+    #   data = HomeActivities.run(cognito_user_id=claims_json['username'])
+      data = HomeActivities.run(cognito_user_id='sample')
     # except TokenVerifyError as e:
     except Exception as e:
       # _ = request.data

@@ -1,6 +1,6 @@
 FROM node:16.18
 
-ENV PORT=4000
+ENV PORT=4567
 
 WORKDIR /jwt-node-sidecar
 COPY . .
