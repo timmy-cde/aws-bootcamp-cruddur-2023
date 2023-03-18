@@ -4,9 +4,9 @@
 | Required Homework | | Homework Challenge|
 | :--- | :--- | :--- |
 | [Set up Cognito User Pool](#set-up-cognito-user-pool) | | [Beautify Forgot Page](#beautify-forgot-page) |
-| [Implement Custom Sign-In Page](#implement-custom-sign-in-page) | | [Decouple the JWT verify by Container Sidecar pattern using aws-jwt-verify.js library](#decouple-the-jwt-verify-by-container-sidecar-pattern-using-aws-jwt-verifyjs-library) |
+| [Implement Custom Sign-In Page](#implement-custom-sign-in-page) | | [[Edited] Decouple the JWT verify using aws-jwt-verify.js library](#decouple-the-jwt-verify-using-aws-jwt-verifyjs-library) |
 | [Implement Custom Sign-Up Page and Custom Confirmation Page](#implement-custom-sign-up-page-and-custom-confirmation-page) | | [Implement checkAuth on pages missed](#implement-checkauth-on-pages-missed) |
-| [Implement Custom Recovery Page](#implement-custom-recovery-page)| |
+| [Implement Custom Recovery Page](#implement-custom-recovery-page)| | [[Ongoing]Decouple the JWT verify by Container Sidecar pattern using aws-jwt-verify.js library]() |
 
 ## Required Homework
 
@@ -84,7 +84,8 @@
 ### Beautify Forgot Page
 - Added styles on the last part of forgot page [(commit d4bd01a)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/d4bd01af53609c8e5be1580189b8b6365a84c161)
 
-### Decouple the JWT verify by Container Sidecar pattern using aws-jwt-verify.js library
+### Decouple the JWT verify using aws-jwt-verify.js library
+**A few days later after I finished it, I realized I did not implement the side car pattern, so I'll also try to inplement this using sidecar pattern later.**
 - I first started by creating a new folder named `jwt-node-sidecar` and inside it I created a Dockerfile to serve a nodejs environment on port 4000
   ```Dockerfile
   FROM node:16.18
