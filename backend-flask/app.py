@@ -170,7 +170,8 @@ def data_create_message():
 @xray_recorder.capture('activities_home')
 def data_home():
     # access_token = CognitoJwtToken.extract_access_token(request.headers)
-    # print(dict(request.headers))
+    print(dict(request.headers))
+    # print(dict(request.headers['X-Special-Proxy-Header']))
     # print(request)
     try:
     # #   claims = cognito_jwt_token.verify(access_token)
