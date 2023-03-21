@@ -1,5 +1,7 @@
 from psycopg_pool import ConnectionPool
 import os
+import re
+import sys
 
 class Db:
   def __init__(self):
@@ -10,9 +12,32 @@ class Db:
     self.pool = ConnectionPool(connection_url)
 
 # when we want to commid data such as an insert
-  def query_commit(self, sql):
+# check for RETURNING in all uppercases
+  def query_commit_id(self, sql, *kwargs):
+    print("SQL STATEMENT--[commit with returning]----------------")
+    print(sql + "\n")
+
+    pattern = r"\bRETURNING\b"
+    is_returning_id = re.search(pattern, sql)
+    
     try:
-      conn = pool.connection()
+      conn = self.pool.connection()
+      cur = conn.cursor()
+      cur.execute(sql, kwargs)
+      if is_returning_id:
+        returning_id = cur.fetchone()[0]
+      conn.commit()
+      
+      if is_returning_id:
+        return returning_id
+
+    except Exception as err:
+      self.print_sql_err(err)
+
+  def query_commit(self, sql):
+    print("SQL STATEMENT--[commit]----------------")
+    try:
+      conn = self.pool.connection()
       cur = conn.cursor()
       cur.execute(sql)
       conn.commit()
@@ -74,9 +99,6 @@ class Db:
     # print the connect() error
     print ("\npsycopg2 ERROR:", err, "on line number:", line_num)
     print ("psycopg2 traceback:", traceback, "-- type:", err_type)
-
-    # psycopg2 extensions.Diagnostics object attribute
-    print ("\nextensions.Diagnostics:", err.diag)
 
     # print the pgcode and pgerror exceptions
     print ("pgerror:", err.pgerror)
