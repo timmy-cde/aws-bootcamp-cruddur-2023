@@ -96,3 +96,32 @@
 - Create a Lambda Trigger when pushing data to the aws rds database. Here we used an already provided prostgres driver (psycopg) for lambda. Since I am on us-east-1 region, I used this layer arn: `arn:aws:lambda:us-east-1:898466741470:layer:psycopg2-py38:2` contrary to what Andrew put on the video since he is in canada region. (See commit [ca46c9b)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/commit/ca46c9b7c88f1937809a2dc2ae56845f9beb1823)
 - Tested creating the user and inserting it to aws rds and the cloudwatch logs show that it has no error.
   ![image](https://user-images.githubusercontent.com/71366703/226793595-5eb2fb4c-6741-498c-80c0-99a4e85fd318.png)
+  ![image](https://user-images.githubusercontent.com/71366703/227135609-b546d507-99bd-4c3f-8a04-e154bb4f7bc5.png)
+- Refactor the codes on backend by creating a `DB` class with all of its functions inside it and creating separate `.sql` files for each of the query
+- Added the creating activities functionality with the db and the 2 errors that took my time the most is:
+  - The error where it says that the requirement in `cur.execute(sql, params)` has 3 arguments but I only pass 2 arguments in it. Turns out I had a typo error on the `create.sql` file
+  - The second is the `NotNullViolation` error and I found the solution on discord where I must update the following:
+    - At `pages/HomeFeedPage.js` add `user_handle`
+      ```js
+      <ActivityForm
+          user_handle={user}  
+          popped={popped}
+          setPopped={setPopped} 
+          setActivities={setActivities}
+      >
+      ```
+    - At `components/ActivityForm.js` under the `fetch` command
+      ```js
+      body: JSON.stringify({
+          user_handle: props.user_handle.handle,
+          message: message,
+          ttl: ttl
+        }),
+      ```
+    - At `app.py` under `/api/activities` endpoint 
+      ```py
+      user_handle = request.json['user_handle']
+      ```
+    ![image](https://user-images.githubusercontent.com/71366703/227138259-8b2b15ce-6b50-4ea7-b665-1f461b2fd831.png)
+- Final Output:
+  ![image](https://user-images.githubusercontent.com/71366703/227138334-523a3c0b-d267-4e41-b6e8-adff2d59fa0f.png)
