@@ -128,12 +128,19 @@ def rollbar_test():
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
-    user_handle = 'andrewbrown'
-    model = MessageGroups.run(user_handle=user_handle)
-    if model['errors'] is not None:
-        return model['errors'], 422
-    else:
-        return model['data'], 200
+    try:
+      data = {"auth": request.headers["Authorization"]}
+      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
+      claims_json = claims.json()
+      # authenticated request
+      app.logger.debug('authenticated')
+      app.logger.debug(claims_json)
+      cognito_user_id = claims_json['sub']
+      model = MessageGroups.run(cognito_user_id=cognito_user_id)
+    except Exception as e:
+      # unauthenticated request
+      app.logger.debug(e)
+      return {}, 401
 
 
 @app.route("/api/messages/@<string:handle>", methods=['GET'])
