@@ -2,16 +2,18 @@
 -- INSERT INTO public.users (display_name, email, handle, cognito_user_id)
 -- VALUES
 --   ('Andrew Brown', 'andrew@exampro.co', 'andrewbrown' ,'MOCK'),
-  -- ('Andrew Bayko', 'bayko@exampro.co', 'bayko' ,'MOCK');
+--   ('Andrew Bayko', 'bayko@exampro.co', 'bayko' ,'MOCK');
+
 INSERT INTO public.users (display_name, email, handle, cognito_user_id)
 VALUES
-  ('Andrew Brown', 'andrew@exampro.co', 'andrewbrown' ,'13d4e9ca-6607-4a9c-80e6-cc8a8ad54f7f'),
-  ('Andrew Bayko', 'bayko@exampro.co', 'bayko' ,'9e605c5a-e8b0-4431-a774-686338918171');
+  ('Timothy Manuel', 'timothys.manuel@gmail.com', 'timmy-cde' ,'MOCK'),
+  ('Tim Suarez', 'suareztim3@gmail.com', 'tim-suarez' ,'MOCK'),
+  ('Londo Mollari', 'lmollari@centari.com', 'londo' ,'MOCK');
 
 INSERT INTO public.activities (user_uuid, message, expires_at)
 VALUES
   (
-    (SELECT uuid from public.users WHERE users.handle = 'andrewbrown' LIMIT 1),
+    (SELECT uuid from public.users WHERE users.handle = 'timmy-cde' LIMIT 1),
     'This was imported as seed data!',
     current_timestamp + interval '10 day'
   )
