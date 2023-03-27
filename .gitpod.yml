@@ -3,7 +3,6 @@ vscode:
     - 42Crunch.vscode-openapi
     - ms-azuretools.vscode-docker
     - cweijan.vscode-postgresql-client2
-
     - dez64ru.macos-modern-theme
 
 tasks:
@@ -30,6 +29,10 @@ tasks:
       cd ./frontend-react-js
       npm install
       cd $THEIA_WORKSPACE_ROOT
+  - name: flask
+    command: |
+      cd backend-flask
+      pip install -r requirements.txt
   - name: sidecar-install
     init: |
       cd ./jwt-node-sidecar
