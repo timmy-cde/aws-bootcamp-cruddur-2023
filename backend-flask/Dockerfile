@@ -1,4 +1,5 @@
-FROM python:3.10-slim-buster
+# FROM python:3.10-slim-buster
+FROM 532819517439.dkr.ecr.us-east-1.amazonaws.com/cruddur-python:3.10-slim-buster
 
 WORKDIR /backend-flask
 
@@ -7,7 +8,8 @@ WORKDIR /backend-flask
 
 COPY . .
 
-ENV FLASK_ENV=development
+# ENV FLASK_ENV=development
+ENV FLASK_DEBUG=1
 
 EXPOSE ${PORT}
 
