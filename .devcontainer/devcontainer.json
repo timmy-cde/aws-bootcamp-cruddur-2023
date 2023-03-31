@@ -2,34 +2,34 @@
 	"name": "Free AWS Cloud Bootcamp Development Environment",
 	"build": { "dockerfile": "Dockerfile" },  
   
-	// "features": {
-	//   "ghcr.io/devcontainers/features/docker-in-docker:2": {}
-	// },
-  
-	"forwardPorts": [3000, 4567, 2000],
-  
-	"portsAttributes": {
-	  "3000": {
-		"label": "Cruddur Frontend",
-		"onAutoForward": "notify"
-	  },
-	  "4567": {
-		"label": "Cruddur Backend",
-		"onAutoForward": "notify"
-	  },
-	  "2000": {
-		"label": "AWS X-Ray Daemon",
-		"onAutoForward": "notify"
-	  },
-	  "4318": {
-		"label": "OTEL HTTP Exporter",
-		"onAutoForward": "notify"
-	  },
-	  "4000": {
-		"label": "NodeJS Sidecar",
-		"onAutoForward": "notify"
-	  }
+	"features": {
+	  "ghcr.io/devcontainers/features/docker-in-docker:2": {}
 	},
+  
+	// "forwardPorts": [3000, 4567, 2000],
+  
+	// "portsAttributes": {
+	//   "3000": {
+	// 	"label": "Cruddur Frontend",
+	// 	"onAutoForward": "notify"
+	//   },
+	//   "4567": {
+	// 	"label": "Cruddur Backend",
+	// 	"onAutoForward": "notify"
+	//   },
+	//   "2000": {
+	// 	"label": "AWS X-Ray Daemon",
+	// 	"onAutoForward": "notify"
+	//   },
+	//   "4318": {
+	// 	"label": "OTEL HTTP Exporter",
+	// 	"onAutoForward": "notify"
+	//   },
+	//   "4000": {
+	// 	"label": "NodeJS Sidecar",
+	// 	"onAutoForward": "notify"
+	//   }
+	// },
   
 	"customizations": {      
 	  "vscode": {        
