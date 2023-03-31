@@ -11,4 +11,4 @@ RUN apt-get install -y gcc
 RUN apt-get install -y curl
 
 RUN npm install
-CMD ["npx", "nodemon", "index.js"]
+CMD ["npx", "nodemon", "index3.js"]

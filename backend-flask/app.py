@@ -183,7 +183,9 @@ def data_home():
     #   claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
     #   claims_json = claims.json()
     #   # authenticated request
-    #   app.logger.debug('authenticated')
+      app.logger.debug('authenticated')
+      print(dict(request.headers)) 
+      print(dict(request.user)) 
     #   app.logger.debug(claims_json)
     #   app.logger.debug(claims_json['username'])
     #   data = HomeActivities.run(cognito_user_id=claims_json['username'])
