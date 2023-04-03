@@ -3,6 +3,7 @@ from flask import request
 from flask_cors import CORS, cross_origin
 import os
 import requests
+import json
 
 from services.home_activities import *
 from services.notifications_activities import *
@@ -169,27 +170,13 @@ def data_create_message():
 @app.route("/api/activities/home", methods=['GET'])
 @xray_recorder.capture('activities_home')
 def data_home():
-    # access_token = CognitoJwtToken.extract_access_token(request.headers)
-    print(dict(request.headers))
-    # print(dict(request.headers['X-Special-Proxy-Header']))
-    # print(request)
-    try:
-    # #   claims = cognito_jwt_token.verify(access_token)
-    # #   app.logger.debug('headers-------')
-    # #   app.logger.debug(request.headers["Authorization"])
-    #   data = {"auth": request.headers["Authorization"]}
-    #   print(request.headers["Authorization"])
-    #   print(dict(request.headers)) 
-    #   claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-    #   claims_json = claims.json()
+    try:    
     #   # authenticated request
       app.logger.debug('authenticated')
-      print(dict(request.headers)) 
-      print(dict(request.user)) 
-    #   app.logger.debug(claims_json)
-    #   app.logger.debug(claims_json['username'])
-    #   data = HomeActivities.run(cognito_user_id=claims_json['username'])
-      data = HomeActivities.run(cognito_user_id='sample')
+      user = json.loads(request.headers["user"])
+      user_uuid = user["sub"]
+      print(f"user_uuid: {user_uuid}")
+      data = HomeActivities.run(cognito_user_id=user_uuid)
     # except TokenVerifyError as e:
     except Exception as e:
       # _ = request.data

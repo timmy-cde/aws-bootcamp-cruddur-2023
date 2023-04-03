@@ -10,37 +10,43 @@ const jwtVerifier = CognitoJwtVerifier.create({
     clientId: process.env.APP_CLIENT_ID,
 });
 
-const proxy = httpProxy.createProxyServer({
-    target: process.env.BACKEND_URL,
-    changeOrigin: true
-})
+const proxy = httpProxy.createProxyServer({})
 
 proxy.on('proxyReq', async (proxyReq, req, res, options) => {
-    const token = req.headers.authorization
-    let claims;
-    if (token) {
-        const access_token = token.split(' ')[1]
-        claims = await jwtVerifier.verify(access_token)
-        console.log({claims})
-        // proxyReq.setHeader('X-Special-Proxy-Header', JSON.stringify(claims));
-        // console.log(claims)
-    }
-    // console.log(JSON.stringify(claims))
-    // let claims_json = claims ? await JSON.stringify(claims) : 'null'
-    // proxyReq.setHeader('X-Special-Proxy-Header', claims_json);
-    console.log({claims})
-    proxyReq.setHeader('X-Special-Proxy-Header', JSON.stringify(claims));
-    
-})
- 
-proxy.on('proxyRes', (proxyRes, req, res) => {
+
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, traceparent');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, HEAD, POST, DELETE');
-})
+
+    console.log("auth: ", req.headers.authorization?.startsWith("Bearer"))
+    // try {
+    //     if (!req.headers["authorization"]?.startsWith("Bearer")) {
+    //         res.statusCode = 401
+    //         return res.end("invalid token")
+    //     }
+
+    //     const token = req.headers["authorization"].replace("Bearer ", "");
+    //     const user = await jwtVerifier.verify(token);
+    //     req.setHeader('user', JSON.stringify(user));
+    //     console.log("req.headers:", req.headers)
+
+    //     // proxyReq.setHeader('User', JSON.stringify(user));
+
+    //     return proxyReq;
+
+    //   } catch (err) {
+    //     console.error({err})
+    //     res.statusCode = 401
+    //     return res.end('Invalid token')
+    //   }
+    }
+)
 
 const server = http.createServer((req, res) => {
-    proxy.web(req, res);
+    proxy.web(req, res, {
+        target: "http://localhost:4568",
+        changeOrigin: true
+    });
 })
 
 jwtVerifier

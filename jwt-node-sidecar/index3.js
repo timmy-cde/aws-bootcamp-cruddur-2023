@@ -9,9 +9,9 @@ const port = 4567;
 config();
 
 const jwtVerifier = CognitoJwtVerifier.create({
-  userPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
+  userPoolId: process.env.AWS_USER_POOLS_ID,
   tokenUse: "access",
-  clientId: process.env.AWS_COGNITO_USER_POOL_CLIENT_ID,
+  clientId: process.env.APP_CLIENT_ID,
 });
 
 app.use(
@@ -28,8 +28,7 @@ app.use(async (req, res, next) => {
     }
     const token = req.header("authorization").replace("Bearer ", "");
     const user = await jwtVerifier.verify(token);
-    req['user'] = user;
-    console.log(req)
+    req['user'] = user;    
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid token" });
@@ -40,20 +39,26 @@ app.get(
   "/api/*",
   proxy("http://localhost:4568", {
     proxyReqOptDecorator: async function(proxyReqOpts, srcReq) {
-        // you can update headers
-        // console.log({req})
-        // proxyReqOpts.headers['user'] = user;
-        // console.log({srcReq})
-        // console.log("==================================")
-        // console.log({proxyReqOpts})
-        if (!srcReq.header("authorization")?.startsWith("Bearer")) {
-            throw new Error("Authorization token invalid");
-          }
-        const token = srcReq.header("authorization").replace("Bearer ", "");
-        const user = await jwtVerifier.verify(token);        
-        proxyReqOpts.headers['User'] = JSON.stringify({user});
-        console.log({proxyReqOpts})
-        return proxyReqOpts;
+      // console.log(srcReq.user)
+      user = await srcReq.user
+      console.log({user})
+      proxyReqOpts.headers['user'] = user;
+        // try {
+        //   if (!srcReq.header("authorization")?.startsWith("Bearer")) {
+        //     return ({ message: "Invalid token" });
+        //   }
+
+        //   const token = srcReq.header("authorization").replace("Bearer ", "");
+        //   const user = await jwtVerifier.verify(token);
+        //   console.log(srcReq.user)
+        //   proxyReqOpts.headers['user'] = JSON.stringify(user);
+        //   // console.log({proxyReqOpts})
+        //   return proxyReqOpts;
+        // } catch (err) {
+        //   console.error({err})
+        //   return ({ message: "Invalid token" });
+        //   // throw new Error("Invalid token(catch)");
+        // }
       },
     proxyErrorHandler: function (err, res, next) {
       switch (err && err.code) {
