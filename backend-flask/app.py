@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 import os
 import requests
 import json
+import inspect
 
 from services.home_activities import *
 from services.notifications_activities import *
@@ -175,7 +176,6 @@ def data_home():
       app.logger.debug('authenticated')
       user = json.loads(request.headers["user"])
       user_uuid = user["sub"]
-      print(f"user_uuid: {user_uuid}")
       data = HomeActivities.run(cognito_user_id=user_uuid)
     # except TokenVerifyError as e:
     except Exception as e:

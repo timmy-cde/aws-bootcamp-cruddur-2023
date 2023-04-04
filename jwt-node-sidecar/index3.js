@@ -39,26 +39,9 @@ app.get(
   "/api/*",
   proxy("http://localhost:4568", {
     proxyReqOptDecorator: async function(proxyReqOpts, srcReq) {
-      // console.log(srcReq.user)
-      user = await srcReq.user
-      console.log({user})
-      proxyReqOpts.headers['user'] = user;
-        // try {
-        //   if (!srcReq.header("authorization")?.startsWith("Bearer")) {
-        //     return ({ message: "Invalid token" });
-        //   }
-
-        //   const token = srcReq.header("authorization").replace("Bearer ", "");
-        //   const user = await jwtVerifier.verify(token);
-        //   console.log(srcReq.user)
-        //   proxyReqOpts.headers['user'] = JSON.stringify(user);
-        //   // console.log({proxyReqOpts})
-        //   return proxyReqOpts;
-        // } catch (err) {
-        //   console.error({err})
-        //   return ({ message: "Invalid token" });
-        //   // throw new Error("Invalid token(catch)");
-        // }
+        user = await srcReq.user
+        proxyReqOpts.headers['user'] = JSON.stringify(user);
+        return proxyReqOpts;
       },
     proxyErrorHandler: function (err, res, next) {
       switch (err && err.code) {
@@ -88,6 +71,6 @@ jwtVerifier
   })
   .then(() =>
     app.listen(port, () => {
-      console.log(`Example app listening at http://localhost:${port}`);
+      console.log(`SC listening at port ${port}`);
     })
   );
