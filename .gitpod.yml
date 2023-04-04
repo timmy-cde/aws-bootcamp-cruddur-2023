@@ -26,6 +26,7 @@ tasks:
     init: |
       cd ./frontend-react-js
       npm install
+      ./bin/auto-redirect
       cd $THEIA_WORKSPACE_ROOT
   - name: sidecar-install
     init: |
