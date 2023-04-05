@@ -1,14 +1,8 @@
-const { CognitoJwtVerifier } = require("aws-jwt-verify");
-const express = require('express');
-const cors = require('cors');
-const { urlencoded } = require('express');
+const http = require('http')
+const httpProxy = require('http-proxy')
+const { CognitoJwtVerifier } = require('aws-jwt-verify')
 
-const app = express()
-const port = 4000;
-
-app.use(cors())
-app.use(express.json())
-app.use(urlencoded({ extended: true }))
+const port = 4567
 
 const jwtVerifier = CognitoJwtVerifier.create({
     userPoolId: process.env.AWS_USER_POOLS_ID,
@@ -16,27 +10,45 @@ const jwtVerifier = CognitoJwtVerifier.create({
     clientId: process.env.APP_CLIENT_ID,
 });
 
-app.get("/", async (req, res, next) => {
-    // console.log("----node-sidecar start----")
-    try {
-        // A valid JWT is expected in the HTTP header "authorization"
-        token = req.body.auth.split(' ')
-        access_token = token[1]
-        const claims = await jwtVerifier.verify(access_token);
-        res.json(claims)
-    } catch (err) {
-        console.error(err);
-        return res.status(403).json({ statusCode: 403, message: "Forbidden" });
+const proxy = httpProxy.createProxyServer({})
+
+proxy.on('proxyReq', async (proxyReq, req, res, options) => {
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, traceparent');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, HEAD, POST, DELETE');
+
+    console.log("auth: ", req.headers.authorization?.startsWith("Bearer"))
+    // try {
+    //     if (!req.headers["authorization"]?.startsWith("Bearer")) {
+    //         res.statusCode = 401
+    //         return res.end("invalid token")
+    //     }
+
+    //     const token = req.headers["authorization"].replace("Bearer ", "");
+    //     const user = await jwtVerifier.verify(token);
+    //     req.setHeader('user', JSON.stringify(user));
+    //     console.log("req.headers:", req.headers)
+
+    //     // proxyReq.setHeader('User', JSON.stringify(user));
+
+    //     return proxyReq;
+
+    //   } catch (err) {
+    //     console.error({err})
+    //     res.statusCode = 401
+    //     return res.end('Invalid token')
+    //   }
     }
-    // console.log("----node-sidecar end----")
+)
 
-    // res.json({ private: "only visible to users sending a valid JWT" });
-});
+const server = http.createServer((req, res) => {
+    proxy.web(req, res, {
+        target: "http://localhost:4568",
+        changeOrigin: true
+    });
+})
 
-// Hydrate the JWT verifier, then start express.
-// Hydrating the verifier makes sure the JWKS is loaded into the JWT verifier,
-// so it can verify JWTs immediately without any latency.
-// (Alternatively, just start express, the JWKS will be downloaded when the first JWT is being verified then)
 jwtVerifier
     .hydrate()
     .catch((err) => {
@@ -44,7 +56,7 @@ jwtVerifier
         process.exit(1);
     })
     .then(() =>
-        app.listen(process.env.PORT || port, () => {
-            console.log(`Example app listening at ${process.env.PORT || port}`);
+        server.listen(process.env.PORT || port, () => {
+            console.log(`proxy app listening at ${process.env.PORT || port}`);
         })
     );
