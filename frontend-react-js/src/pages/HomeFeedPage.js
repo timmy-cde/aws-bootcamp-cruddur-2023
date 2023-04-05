@@ -1,8 +1,7 @@
 import './HomeFeedPage.css';
 import React from "react";
 
-import checkAuth from '../lib/CheckAuth';
-import { Auth } from 'aws-amplify';
+import getIdToken from '../lib/GetIdToken';
 
 import DesktopNavigation  from '../components/DesktopNavigation';
 import DesktopSidebar     from '../components/DesktopSidebar';
@@ -39,28 +38,12 @@ export default function HomeFeedPage() {
     }
   };
 
-  const getIdToken = async () => {
-
-    Auth.currentSession().then(res => {
-      let accessToken = res.getAccessToken()
-
-      localStorage.setItem(
-        "access_token",
-        accessToken.jwtToken
-      );
-
-      loadData();
-      checkAuth(setUser);
-
-    })
-  }
-
   React.useEffect(()=>{
     //prevents double call
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
 
-    getIdToken();
+    getIdToken(loadData, setUser);
   }, [])
 
   return (

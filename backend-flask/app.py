@@ -132,13 +132,10 @@ def rollbar_test():
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
     try:
-      data = {"auth": request.headers["Authorization"]}
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      cognito_user_id = claims_json['sub']
+      user = json.loads(request.headers["user"])
+      cognito_user_id = user["sub"]
       model = MessageGroups.run(cognito_user_id=cognito_user_id)
       if model['errors'] is not None:
         return model['errors'], 422
@@ -153,13 +150,10 @@ def data_message_groups():
 @app.route("/api/messages/<string:message_group_uuid>", methods=['GET'])
 def data_messages(message_group_uuid):
     try:
-      data = {"auth": request.headers["Authorization"]}
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      cognito_user_id = claims_json['sub']
+      user = json.loads(request.headers["user"])
+      cognito_user_id = user["sub"]
       model = Messages.run(
         cognito_user_id=cognito_user_id,
         message_group_uuid=message_group_uuid
@@ -178,13 +172,10 @@ def data_messages(message_group_uuid):
 @cross_origin()
 def data_create_message():
     try:
-      data = {"auth": request.headers["Authorization"]}
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      cognito_user_id = claims_json['sub']
+      user = json.loads(request.headers["user"])
+      cognito_user_id = user["sub"]
       message_group_uuid   = request.json.get('message_group_uuid',None)
       user_receiver_handle = request.json.get('handle',None)
       message = request.json['message']
@@ -221,11 +212,11 @@ def data_create_message():
 @xray_recorder.capture('activities_home')
 def data_home():
     try:    
-    #   # authenticated request
+      # authenticated request
       app.logger.debug('authenticated')
       user = json.loads(request.headers["user"])
-      user_uuid = user["sub"]
-      data = HomeActivities.run(cognito_user_id=user_uuid)
+      cognito_user_id = user["sub"]
+      data = HomeActivities.run(cognito_user_id=cognito_user_id)
     # except TokenVerifyError as e:
     except Exception as e:
       # _ = request.data
