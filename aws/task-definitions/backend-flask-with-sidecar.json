@@ -1,0 +1,94 @@
+{
+    "family": "backend",
+    "executionRoleArn": "arn:aws:iam::532819517439:role/CruddurServiceExecutionRole",
+    "taskRoleArn": "arn:aws:iam::532819517439:role/CruddurTaskRole",
+    "networkMode": "awsvpc",
+    "cpu": "256",
+    "memory": "512",
+    "requiresCompatibilities": [ 
+      "FARGATE" 
+    ],
+    "containerDefinitions": [
+      {
+        "name": "backend-flask",
+        "image": "532819517439.dkr.ecr.us-east-1.amazonaws.com/backend-flask",
+        "essential": true,
+        "healthCheck": {
+          "command": [
+            "CMD-SHELL",
+            "curl -f http://localhost:4567/api/health-check || exit 1"
+          ],
+          "interval": 30,
+          "timeout": 5,
+          "retries": 3,
+          "startPeriod": 60
+        },
+        "portMappings": [
+          {
+            "name": "backend-flask",
+            "containerPort": 4568,
+            "protocol": "tcp", 
+            "appProtocol": "http"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+              "awslogs-group": "cruddur",
+              "awslogs-region": "us-east-1",
+              "awslogs-stream-prefix": "backend-flask"
+          }
+        },
+        "environment": [
+          {"name": "AWS_USER_POOLS_ID", "value": "us-east-1_bnfXCOI56"},
+          {"name": "AWS_COGNITO_USER_POOL_CLIENT_ID", "value": "7gojn9iqpjabsdsq7q18a5i24l"},
+          {"name": "FRONTEND_URL", "value": "tmanuel.cloud"},
+          {"name": "BACKEND_URL", "value": "api.tmanuel.cloud"},
+          {"name": "AWS_DEFAULT_REGION", "value": "us-east-1"}
+        ],
+        "secrets": [
+          {"name": "AWS_ACCESS_KEY_ID"    , "valueFrom": "arn:aws:ssm:us-east-1:532819517439:parameter/cruddur/backend-flask/AWS_ACCESS_KEY_ID"},
+          {"name": "AWS_SECRET_ACCESS_KEY", "valueFrom": "arn:aws:ssm:us-east-1:532819517439:parameter/cruddur/backend-flask/AWS_SECRET_ACCESS_KEY"},
+          {"name": "CONNECTION_URL"       , "valueFrom": "arn:aws:ssm:us-east-1:532819517439:parameter/cruddur/backend-flask/CONNECTION_URL" },
+          {"name": "ROLLBAR_ACCESS_TOKEN" , "valueFrom": "arn:aws:ssm:us-east-1:532819517439:parameter/cruddur/backend-flask/ROLLBAR_ACCESS_TOKEN" },
+          {"name": "OTEL_EXPORTER_OTLP_HEADERS" , "valueFrom": "arn:aws:ssm:us-east-1:532819517439:parameter/cruddur/backend-flask/OTEL_EXPORTER_OTLP_HEADERS" }
+        ]
+      },
+      {
+        "name": "backend-sidecar-node",
+        "image": "532819517439.dkr.ecr.us-east-1.amazonaws.com/cruddur-backend-sidecar-node",
+        "essential": true,
+        "healthCheck": {
+          "command": [
+            "CMD-SHELL",
+            "curl -f http://localhost:4567/health || exit 1"
+          ],
+          "interval": 30,
+          "timeout": 5,
+          "retries": 3,
+          "startPeriod": 60
+        },
+        "portMappings": [
+          {
+            "name": "backend-sidecar-node",
+            "containerPort": 4567,
+            "protocol": "tcp", 
+            "appProtocol": "http"
+          }
+        ],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+              "awslogs-group": "cruddur",
+              "awslogs-region": "us-east-1",
+              "awslogs-stream-prefix": "backend-sidecar-node"
+          }
+        },
+        "environment": [
+          {"name": "AWS_USER_POOLS_ID", "value": "us-east-1_bnfXCOI56"},
+          {"name": "APP_CLIENT_ID", "value": "7gojn9iqpjabsdsq7q18a5i24l"},
+          {"name": "FRONTEND_URL", "value": "tmanuel.cloud"}
+        ]
+      }
+    ]
+  }

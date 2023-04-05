@@ -35,6 +35,10 @@ app.use(async (req, res, next) => {
   }
 });
 
+app.get('/health', (req, res, next) => {
+  res.status(200).send({proxy: 'success!'})
+})
+
 app.get(
   "/api/*",
   proxy("http://localhost:4568", {
