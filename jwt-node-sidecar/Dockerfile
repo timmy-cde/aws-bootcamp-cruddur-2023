@@ -1,7 +1,7 @@
 # FROM node:16.18
 FROM 532819517439.dkr.ecr.us-east-1.amazonaws.com/cruddur-nodejs:16.18
 
-ENV PORT=4000
+ENV PORT=4567
 
 WORKDIR /jwt-node-sidecar
 COPY . .
@@ -12,4 +12,4 @@ RUN apt-get install -y gcc
 RUN apt-get install -y curl
 
 RUN npm install
-CMD ["npx", "nodemon", "index.js"]
+CMD ["npx", "nodemon", "index3.js"]

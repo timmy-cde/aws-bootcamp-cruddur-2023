@@ -3,6 +3,8 @@ from flask import request
 from flask_cors import CORS, cross_origin
 import os
 import requests
+import json
+import inspect
 
 from services.users_short import *
 from services.home_activities import *
@@ -134,13 +136,10 @@ def health_check():
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
     try:
-      data = {"auth": request.headers["Authorization"]}
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      cognito_user_id = claims_json['sub']
+      user = json.loads(request.headers["user"])
+      cognito_user_id = user["sub"]
       model = MessageGroups.run(cognito_user_id=cognito_user_id)
       if model['errors'] is not None:
         return model['errors'], 422
@@ -155,13 +154,10 @@ def data_message_groups():
 @app.route("/api/messages/<string:message_group_uuid>", methods=['GET'])
 def data_messages(message_group_uuid):
     try:
-      data = {"auth": request.headers["Authorization"]}
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      cognito_user_id = claims_json['sub']
+      user = json.loads(request.headers["user"])
+      cognito_user_id = user["sub"]
       model = Messages.run(
         cognito_user_id=cognito_user_id,
         message_group_uuid=message_group_uuid
@@ -180,13 +176,10 @@ def data_messages(message_group_uuid):
 @cross_origin()
 def data_create_message():
     try:
-      data = {"auth": request.headers["Authorization"]}
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      cognito_user_id = claims_json['sub']
+      user = json.loads(request.headers["user"])
+      cognito_user_id = user["sub"]
       message_group_uuid   = request.json.get('message_group_uuid',None)
       user_receiver_handle = request.json.get('handle',None)
       message = request.json['message']
@@ -222,20 +215,12 @@ def data_create_message():
 @app.route("/api/activities/home", methods=['GET'])
 @xray_recorder.capture('activities_home')
 def data_home():
-    # access_token = CognitoJwtToken.extract_access_token(request.headers)
-    try:
-    #   claims = cognito_jwt_token.verify(access_token)
-    #   app.logger.debug('headers-------')
-    #   app.logger.debug(request.headers["Authorization"])
-      data = {"auth": request.headers["Authorization"]}
-    #   print(dict(request.headers)) 
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
+    try:    
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      app.logger.debug(claims_json['username'])
-      data = HomeActivities.run(cognito_user_id=claims_json['username'])
+      user = json.loads(request.headers["user"])
+      cognito_user_id = user["sub"]
+      data = HomeActivities.run(cognito_user_id=cognito_user_id)
     # except TokenVerifyError as e:
     except Exception as e:
       # _ = request.data

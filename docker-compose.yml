@@ -5,8 +5,8 @@ services:
     environment:
       PYTHONUNBUFFERED: 1,
       # CONNECTION_URL: "${CONNECTION_URL}"
-      # CONNECTION_URL: "${PROD_CONNECTION_URL}"
-      CONNECTION_URL: "postgresql://postgres:password@db:5432/cruddur"
+      CONNECTION_URL: "${PROD_CONNECTION_URL}"
+      # CONNECTION_URL: "postgresql://postgres:password@db:5432/cruddur"
       # AWS_ENDPOINT_URL: "http://dynamodb-local:8000"
       FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
@@ -23,8 +23,8 @@ services:
       AWS_COGNITO_USER_POOL_ID: "us-east-1_bnfXCOI56"
       AWS_COGNITO_USER_POOL_CLIENT_ID: '7gojn9iqpjabsdsq7q18a5i24l'
     build: ./backend-flask
-    ports:
-      - "4567:4567"
+    # ports:
+    #   - "4568:4568"
     volumes:
       - ./backend-flask:/backend-flask
     healthcheck:
@@ -33,9 +33,11 @@ services:
       retries: 5
       start_period: 20s
       timeout: 10s
+    network_mode: "service:nodejs-sidecar"
 
   frontend-react-js:
     environment:
+      REACT_APP_FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       REACT_APP_BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       REACT_APP_OTEL_COLLECTOR_URL: "https://4318-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       REACT_APP_AWS_PROJECT_REGION: "${AWS_DEFAULT_REGION}"
@@ -57,12 +59,16 @@ services:
 
   nodejs-sidecar:
     environment:
-      BACKEND_URL: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      BACKEND_URL: "https://4568-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      BACKEND_URL_PROXY: "https://4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
+      FRONTEND_URL: "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}"
       AWS_USER_POOLS_ID: "us-east-1_bnfXCOI56"
+      # AWS_COGNITO_USER_POOL_ID: "us-east-1_bnfXCOI56"
       APP_CLIENT_ID: "7gojn9iqpjabsdsq7q18a5i24l"
+      # AWS_COGNITO_USER_POOL_CLIENT_ID: "7gojn9iqpjabsdsq7q18a5i24l"
     build: ./jwt-node-sidecar
     ports:
-      - 4000:4000
+      - 4567:4567
     volumes:
       - ./jwt-node-sidecar:/jwt-node-sidecar
       - /jwt-node-sidecar/node_modules

@@ -1,0 +1,11 @@
+#! /usr/bin/bash
+
+aws cognito-idp update-user-pool-client \
+--user-pool-id $AWS_COGNITO_USER_POOL_ID \
+--client-id "7gojn9iqpjabsdsq7q18a5i24l" \
+--callback-urls "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}" \
+--logout-urls "https://3000-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}" \
+--supported-identity-providers Google \
+--allowed-o-auth-flows-user-pool-client \
+--allowed-o-auth-flows implicit \
+--allowed-o-auth-scopes {email,openid,profile,aws.cognito.signin.user.admin}

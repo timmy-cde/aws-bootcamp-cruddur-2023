@@ -1,7 +1,7 @@
 import './HomeFeedPage.css';
 import React from "react";
 
-import checkAuth from '../lib/CheckAuth';
+import getIdToken from '../lib/GetIdToken';
 
 import DesktopNavigation  from '../components/DesktopNavigation';
 import DesktopSidebar     from '../components/DesktopSidebar';
@@ -38,14 +38,12 @@ export default function HomeFeedPage() {
     }
   };
 
-
   React.useEffect(()=>{
     //prevents double call
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
 
-    loadData();
-    checkAuth(setUser);
+    getIdToken(loadData, setUser);
   }, [])
 
   return (
