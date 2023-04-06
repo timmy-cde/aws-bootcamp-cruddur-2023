@@ -58,6 +58,6 @@ ports:
   - name: otel-http-exporter
     port: 4318
     visibility: public
-  - name: nodejs-sidecar
-    port: 4000
-    visibility: public
+  # - name: nodejs-sidecar
+  #   port: 4000
+  #   visibility: public

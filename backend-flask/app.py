@@ -133,14 +133,18 @@ def health_check():
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
+    access_token = CognitoJwtToken.extract_access_token(request.headers)
     try:
-      data = {"auth": request.headers["Authorization"]}
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
+      claims = cognito_jwt_token.verify(access_token)
+
+      # For decoupled auth
+      # data = {"auth": request.headers["Authorization"]}
+      # claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
+      # claims_json = claims.json()
+
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      cognito_user_id = claims_json['sub']
+      cognito_user_id = claims['sub']
       model = MessageGroups.run(cognito_user_id=cognito_user_id)
       if model['errors'] is not None:
         return model['errors'], 422
@@ -154,14 +158,18 @@ def data_message_groups():
 
 @app.route("/api/messages/<string:message_group_uuid>", methods=['GET'])
 def data_messages(message_group_uuid):
+    access_token = CognitoJwtToken.extract_access_token(request.headers)
     try:
-      data = {"auth": request.headers["Authorization"]}
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
+      claims = cognito_jwt_token.verify(access_token)
+
+      # For decoupled auth
+      # data = {"auth": request.headers["Authorization"]}
+      # claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
+      # claims_json = claims.json()
+
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      cognito_user_id = claims_json['sub']
+      cognito_user_id = claims['sub']
       model = Messages.run(
         cognito_user_id=cognito_user_id,
         message_group_uuid=message_group_uuid
@@ -179,14 +187,18 @@ def data_messages(message_group_uuid):
 @app.route("/api/messages", methods=['POST', 'OPTIONS'])
 @cross_origin()
 def data_create_message():
+    access_token = CognitoJwtToken.extract_access_token(request.headers)
     try:
-      data = {"auth": request.headers["Authorization"]}
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
+      claims = cognito_jwt_token.verify(access_token)
+
+      # For decoupled auth
+      # data = {"auth": request.headers["Authorization"]}
+      # claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
+      # claims_json = claims.json()
+
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      cognito_user_id = claims_json['sub']
+      cognito_user_id = claims['sub']
       message_group_uuid   = request.json.get('message_group_uuid',None)
       user_receiver_handle = request.json.get('handle',None)
       message = request.json['message']
@@ -222,20 +234,21 @@ def data_create_message():
 @app.route("/api/activities/home", methods=['GET'])
 @xray_recorder.capture('activities_home')
 def data_home():
-    # access_token = CognitoJwtToken.extract_access_token(request.headers)
+    access_token = CognitoJwtToken.extract_access_token(request.headers)
     try:
-    #   claims = cognito_jwt_token.verify(access_token)
-    #   app.logger.debug('headers-------')
-    #   app.logger.debug(request.headers["Authorization"])
-      data = {"auth": request.headers["Authorization"]}
-    #   print(dict(request.headers)) 
-      claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
-      claims_json = claims.json()
+      claims = cognito_jwt_token.verify(access_token)
+      
+      # For decoupled auth
+      # app.logger.debug(request.headers["Authorization"])
+      # data = {"auth": request.headers["Authorization"]}
+      # claims = requests.get(os.getenv("SIDECAR_URL"), json=data)
+      # claims_json = claims.json()
+      
       # authenticated request
       app.logger.debug('authenticated')
-      app.logger.debug(claims_json)
-      app.logger.debug(claims_json['username'])
-      data = HomeActivities.run(cognito_user_id=claims_json['username'])
+      app.logger.debug(claims)
+      app.logger.debug(claims['username'])
+      data = HomeActivities.run(cognito_user_id=claims['username'])
     # except TokenVerifyError as e:
     except Exception as e:
       # _ = request.data
