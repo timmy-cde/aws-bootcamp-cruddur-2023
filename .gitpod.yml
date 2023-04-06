@@ -36,7 +36,7 @@ tasks:
       pip install -r requirements.txt
   - name: sidecar-install
     init: |
-      cd ./jwt-node-sidecar
+      cd ./backend-sidecar-node
       npm install
       cd $THEIA_WORKSPACE_ROOT
   - name: fargate
