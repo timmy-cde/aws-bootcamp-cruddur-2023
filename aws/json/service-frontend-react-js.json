@@ -18,9 +18,12 @@
             "sg-0063adca3f5550a7f"
           ],
           "subnets": [
-              "subnet-09cbd65ecc0523328",
-              "subnet-0d534896f4528ad2e",
-              "subnet-07dba30d5e7210691"
+            "subnet-0d534896f4528ad2e",
+            "subnet-09cbd65ecc0523328",
+            "subnet-03d657cc15045dd08",
+            "subnet-0b80a43211230da21",
+            "subnet-07dba30d5e7210691",
+            "subnet-0f1faa2cd8ba2bf62"
           ]
         }
       },
