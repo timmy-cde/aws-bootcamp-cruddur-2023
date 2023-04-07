@@ -1,2 +1,3 @@
 docker/**/*
-frontend-reactjs/build/*
+session-manager-plugin.deb
+session-manager-plugin.rpm
