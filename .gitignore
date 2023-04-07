@@ -1,4 +1,5 @@
 docker/**/*
 frontend-react-js/build/**/*
-./session-manager-plugin.deb
-./session-manager-plugin.rpm
+*.deb
+*.rpm
+*.env

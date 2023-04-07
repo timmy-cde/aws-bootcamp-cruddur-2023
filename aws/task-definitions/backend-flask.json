@@ -10,7 +10,7 @@
     ],
     "containerDefinitions": [
       {
-        "name": "x-ray",
+        "name": "xray",
         "image": "public.ecr.aws/xray/aws-xray-daemon",
         "essential": true,
         "user": "1337",
