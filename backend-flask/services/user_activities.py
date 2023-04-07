@@ -5,7 +5,7 @@ from aws_xray_sdk.core import xray_recorder
 class UserActivities:
     def run(user_handle):
         # xray custom part ----------------
-        # subsegment = xray_recorder.begin_subsegment('user_activities')
+        subsegment = xray_recorder.begin_subsegment('user_activities')
 
         try:
             model = {
@@ -15,7 +15,7 @@ class UserActivities:
             now = datetime.now(timezone.utc).astimezone()
 
             # xray custom part ----------------
-            # subsegment.put_annotation('now', now.isoformat())
+            subsegment.put_annotation('now', now.isoformat())
 
             if user_handle == None or len(user_handle) < 1:
                 model['errors'] = ['blank_user_handle']
@@ -23,8 +23,8 @@ class UserActivities:
                 now = datetime.now()
 
                 # xray custom part ----------------
-                # subsegment2 = xray_recorder.begin_subsegment('mock-data')
-                # subsegment2.put_annotation('now', now.isoformat())
+                subsegment2 = xray_recorder.begin_subsegment('mock-data')
+                subsegment2.put_annotation('now', now.isoformat())
 
                 results = [{
                     'uuid': '248959df-3079-4947-b847-9e0892d1bab4',
@@ -48,10 +48,10 @@ class UserActivities:
             xray_recorder.end_subsegment()
 
             # xray custom part ----------------
-            # xray_recorder.end_subsegment()
+            xray_recorder.end_subsegment()
 
         # xray custom part ----------------
-        # subsegment.put_annotation('results_length', len(model['data']))
-        # xray_recorder.end_subsegment()
+        subsegment.put_annotation('results_length', len(model['data']))
+        xray_recorder.end_subsegment()
 
         return model

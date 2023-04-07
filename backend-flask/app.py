@@ -57,8 +57,8 @@ processor = BatchSpanProcessor(OTLPSpanExporter())
 provider.add_span_processor(processor)
 
 # X-Ray ------------------
-# xray_url = os.getenv("AWS_XRAY_URL")
-# xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
+xray_url = os.getenv("AWS_XRAY_URL")
+xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
 
 # Show this in the logs within the backend-flask app (STDOUT)
 # simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
@@ -81,7 +81,7 @@ FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 
 # X-Ray ------------------
-# XRayMiddleware(app, xray_recorder)
+XRayMiddleware(app, xray_recorder)
 
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
@@ -232,7 +232,7 @@ def data_create_message():
 
 
 @app.route("/api/activities/home", methods=['GET'])
-# @xray_recorder.capture('activities_home')
+@xray_recorder.capture('activities_home')
 def data_home():
     access_token = CognitoJwtToken.extract_access_token(request.headers)
     try:
@@ -267,7 +267,7 @@ def data_notifications():
 
 
 @app.route("/api/activities/@<string:handle>", methods=['GET'])
-# @xray_recorder.capture('activities_users')
+@xray_recorder.capture('activities_users')
 def data_handle(handle):
     model = UserActivities.run(handle)
     if model['errors'] is not None:

@@ -10,6 +10,19 @@
     ],
     "containerDefinitions": [
       {
+        "name": "x-ray",
+        "image": "public.ecr.aws/xray/aws-xray-daemon",
+        "essential": true,
+        "user": "1337",
+        "portMappings": [
+          {
+            "name": "xray",
+            "containerPort": 2000,
+            "protocol": "udp"
+          }
+        ]
+      },
+      {
         "name": "backend-flask",
         "image": "532819517439.dkr.ecr.us-east-1.amazonaws.com/backend-flask",
         "essential": true,
@@ -46,6 +59,7 @@
           {"name": "AWS_COGNITO_USER_POOL_CLIENT_ID", "value": "7gojn9iqpjabsdsq7q18a5i24l"},
           {"name": "FRONTEND_URL", "value": "https://tmanuel.cloud"},
           {"name": "BACKEND_URL", "value": "https://api.tmanuel.cloud"},
+          {"name": "AWS_XRAY_URL", "value": "*api.tmanuel.cloud"},
           {"name": "AWS_DEFAULT_REGION", "value": "us-east-1"}
         ],
         "secrets": [
