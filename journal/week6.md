@@ -219,6 +219,7 @@
 - Create script to connect to ECS Service.
 - Create a `Dockerfile.prod` and `nginx.conf` configuration file for the frontend.
 - Build the frontend image using the command below, create ECR repo for frontend and push the image to the ECR.
+  > We also later changed the `REACT_APP_BACKEND_URL` into our domain that is hosted to Route53 which in my case is api.tmanuel.cloud
   ```sh
   docker build \
   --build-arg REACT_APP_BACKEND_URL="https://4567-$GITPOD_WORKSPACE_ID.$GITPOD_WORKSPACE_CLUSTER_HOST" \
