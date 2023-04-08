@@ -220,7 +220,7 @@
 - Create a `Dockerfile.prod` and `nginx.conf` configuration file for the frontend.
 - Build the frontend image using the command below, create ECR repo for frontend and push the image to the ECR.
   ```sh
-    docker build \
+  docker build \
   --build-arg REACT_APP_BACKEND_URL="https://4567-$GITPOD_WORKSPACE_ID.$GITPOD_WORKSPACE_CLUSTER_HOST" \
   --build-arg REACT_APP_AWS_PROJECT_REGION="$AWS_DEFAULT_REGION" \
   --build-arg REACT_APP_AWS_COGNITO_REGION="$AWS_DEFAULT_REGION" \
@@ -262,7 +262,7 @@
 - Create a busybox script.
 - Create a ruby script to generate the env files of backend and frontend.
 - Remove the health check in the xray container of the backend task definition.
-- Update the `bin/ddb/seed` file:
+- Update the `bin/ddb/seed` file variables:
 
   ```py
   now = datetime.now()
@@ -270,7 +270,7 @@
   created_at = (now - timedelta(days=1) + timedelta(minutes=i)).isoformat()
   ```
 
-- Update the `backend-flask/lib/ddb.py` file:
+- Update the `backend-flask/lib/ddb.py` file variables:
   ```py
   created_at = datetime.now().isoformat()
   ```
