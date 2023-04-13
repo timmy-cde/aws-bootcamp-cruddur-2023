@@ -4,6 +4,7 @@ vscode:
     - ms-azuretools.vscode-docker
     - cweijan.vscode-postgresql-client2
     - dez64ru.macos-modern-theme
+    - esbenp.prettier-vscode
 
 tasks:
   - name: aws-cli
@@ -45,6 +46,10 @@ tasks:
       curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
       sudo dpkg -i session-manager-plugin.deb
       cd ./backend-flask
+  - name: cdk
+    before: |
+      cd $THEIA_WORKSPACE_ROOT
+      npm install aws-cdk -g
 
 ports:
   - name: frontend
@@ -60,6 +65,6 @@ ports:
   - name: otel-http-exporter
     port: 4318
     visibility: public
-  # - name: nodejs-sidecar
-  #   port: 4000
-  #   visibility: public
+# - name: nodejs-sidecar
+#   port: 4000
+#   visibility: public
