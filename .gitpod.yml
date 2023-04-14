@@ -48,8 +48,10 @@ tasks:
       cd ./backend-flask
   - name: cdk
     before: |
-      cd $THEIA_WORKSPACE_ROOT
+      cd $THEIA_WORKSPACE_ROOT/thumbing-serverless-cdk
       npm install aws-cdk -g
+      cp .env.example .env
+      npm i
 
 ports:
   - name: frontend

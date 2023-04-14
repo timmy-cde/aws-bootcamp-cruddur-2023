@@ -3,3 +3,4 @@ frontend-react-js/build/**/*
 *.deb
 *.rpm
 *.env
+node_modules
