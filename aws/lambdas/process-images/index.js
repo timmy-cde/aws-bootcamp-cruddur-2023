@@ -1,4 +1,5 @@
 const process = require("process");
+const path = require("path")
 const {
   getClient,
   getOriginalImage,
@@ -15,8 +16,6 @@ const height = parseInt(process.env.PROCESS_HEIGHT);
 client = getClient();
 
 exports.handler = async (event) => {
-  console.log("event", event);
-
   const srcBucket = event.Records[0].s3.bucket.name;
   const srcKey = decodeURIComponent(
     event.Records[0].s3.object.key.replace(/\+/g, " ")
@@ -25,11 +24,14 @@ exports.handler = async (event) => {
   console.log("srcKey", srcKey);
 
   const dstBucket = bucketName;
-  const dstKey = srcKey.replace(folderInput, folderOutput);
+
+  const filename = path.parse(srcKey).name
+  
+  const dstKey = `${folderOutput}/${filename}.jpg`
   console.log("dstBucket", dstBucket);
   console.log("dstKey", dstKey);
 
   const originalImage = await getOriginalImage(client, srcBucket, srcKey);
   const processedImage = await processImage(originalImage, width, height);
-  await uploadProcessedImage(dstBucket, dstKey, processedImage);
+  await uploadProcessedImage(client, dstBucket, dstKey, processedImage);
 };
