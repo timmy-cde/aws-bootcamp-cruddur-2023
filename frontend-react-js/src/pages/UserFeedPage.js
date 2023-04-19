@@ -1,38 +1,43 @@
 import './UserFeedPage.css';
+// import "./ActivityFeed.css";
 import React from "react";
 import { useParams } from 'react-router-dom';
 
-import { Auth } from 'aws-amplify';
+import { checkAuth, getAccessToken } from "../lib/CheckAuth";
 
 import DesktopNavigation  from '../components/DesktopNavigation';
 import DesktopSidebar     from '../components/DesktopSidebar';
 import ActivityFeed from '../components/ActivityFeed';
 import ActivityForm from '../components/ActivityForm';
+import ProfileHeading from '../components/ProfileHeading';
 
-// [TODO] Authenication
-import Cookies from 'js-cookie'
 
 export default function UserFeedPage() {
   const [activities, setActivities] = React.useState([]);
   const [profile, setProfile] = React.useState([]);
   const [popped, setPopped] = React.useState([]);
+  const [poppedProfile, setPoppedProfile] = React.useState([]);
   const [user, setUser] = React.useState(null);
   const dataFetchedRef = React.useRef(false);
 
   const params = useParams();
-  const title = `@${params.handle}`;
 
   const loadData = async () => {
     try {
-      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/${title}`
+      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/@${params.handle}`;
+      await getAccessToken();
+      const access_token = localStorage.getItem("access_token");
       const res = await fetch(backend_url, {
-        method: "GET"
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+        method: "GET",
       });
       let resJson = await res.json();
       if (res.status === 200) {
         // setProfile(resJson.profile);
-        setProfile(resJson[0].profile);
         // setActivities(resJson.activities);
+        setProfile(resJson[0].profile);
         setActivities(resJson[0].activities);
       } else {
         console.log(res)
@@ -42,40 +47,32 @@ export default function UserFeedPage() {
     }
   };
 
-  const checkAuth = async () => {
-    Auth.currentAuthenticatedUser({
-      // Optional, By default is false. 
-      // If set to true, this call will send a 
-      // request to Cognito to get the latest user data
-      bypassCache: false 
-    })
-    .then((user) => {
-      console.log('user',user);
-      return Auth.currentAuthenticatedUser()
-    }).then((cognito_user) => {
-        setUser({
-          display_name: cognito_user.attributes.name,
-          handle: cognito_user.attributes.preferred_username
-        })
-    })
-    .catch((err) => console.log(err));
-  };
-
   React.useEffect(()=>{
     //prevents double call
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
 
     loadData();
-    checkAuth();
+    checkAuth(setUser);
   }, [])
 
   return (
     <article>
-      <DesktopNavigation user={user} active={'profile'} setPopped={setPopped} />
-      <div className='content'>
+      <DesktopNavigation user={user} active={"profile"} setPopped={setPopped} />
+      <div className="content">
         <ActivityForm popped={popped} setActivities={setActivities} />
-        <ActivityFeed title={title} activities={activities} />
+
+        <div className="activity_feed">
+          <ProfileHeading setPopped={setPoppedProfile} profile={profile} />
+          {/* <div className="activity_feed_heading">
+            <div className="title">{profile.display_name}</div>
+            <div className="cruds_count">{profile.cruds_count} Cruds</div>
+          </div> */}
+        </div>
+        <ActivityFeed
+          title={`@${profile.display_name}`}
+          activities={activities}
+        />
       </div>
       <DesktopSidebar user={user} />
     </article>

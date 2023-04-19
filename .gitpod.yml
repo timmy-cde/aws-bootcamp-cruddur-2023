@@ -27,13 +27,15 @@ tasks:
       source "$THEIA_WORKSPACE_ROOT/backend-flask/bin/rds/update-sg-rule"
   - name: frontend-install
     before: |
-      source "$THEIA_WORKSPACE_ROOT/bin/frontend/generate-env"
+      cd $THEIA_WORKSPACE_ROOT
+      ./bin/frontend/generate-env"
       cd ./frontend-react-js
       npm install
       cd $THEIA_WORKSPACE_ROOT
   - name: flask
     command: |
-      source "$THEIA_WORKSPACE_ROOT/bin/backend/generate-env"
+      cd $THEIA_WORKSPACE_ROOT
+      ./bin/backend/generate-env"
       cd backend-flask
       pip install -r requirements.txt
   - name: sidecar-install
