@@ -52,9 +52,6 @@ tasks:
       npm install aws-cdk -g
       cp .env.example .env
       npm i
-  - name: docker
-    before: |
-      $THEIA_WORKSPACE_ROOT/bin/ecr/login
 
 ports:
   - name: frontend
