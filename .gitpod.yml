@@ -8,6 +8,7 @@ vscode:
     - rebornix.ruby
     - castwide.solargraph
     - rangav.vscode-thunder-client
+    - wingrunr21.vscode-ruby
 
 tasks:
   - name: aws-cli
@@ -19,7 +20,7 @@ tasks:
       unzip awscliv2.zip
       sudo ./aws/install
       cd $THEIA_WORKSPACE_ROOT
-      bash bin/erc/login
+      bash bin/ecr/login
   - name: postgres
     before: |
       curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
@@ -39,11 +40,11 @@ tasks:
       ruby $THEIA_WORKSPACE_ROOT/bin/backend/generate-env
       cd backend-flask
       pip install -r requirements.txt
-  # - name: sidecar-install
-  #   before: |
-  #     cd ./jwt-node-sidecar
-  #     npm install
-  #     cd $THEIA_WORKSPACE_ROOT
+# - name: sidecar-install
+#   before: |
+#     cd ./jwt-node-sidecar
+#     npm install
+#     cd $THEIA_WORKSPACE_ROOT
   - name: fargate
     before: |
       curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"

@@ -8,26 +8,28 @@ export default function ProfileForm(props) {
   const [displayName, setDisplayName] = React.useState(0);
 
   React.useEffect(() => {
-    console.log("useEffects", props);
-    setBio(props.profile.bio);
+    setBio(props.profile.bio || '');
     setDisplayName(props.profile.display_name);
   }, [props.profile]);
 
-  const s3Uploadkey = async (event) => {
+  const s3Uploadkey = async (extension) => {
+    console.log({extension})
     try {
-      const backend_url =
-        "https://h8dshyqhd6.execute-api.us-east-1.amazonaws.com/avatars/key_upload";
+      const gateway_url = `${process.env.REACT_APP_API_GATEWAY_ENDPOINT}/avatars/key_upload`;
       await getAccessToken();
       const access_token = localStorage.getItem("access_token");
-      const res = await fetch(backend_url, {
+      const json = {
+        extension: extension
+      }
+      const res = await fetch(gateway_url, {
         method: "POST",
         headers: {
-          'Origin':
-            "https://3000-timmycde-awsbootcampcru-a2o55zciwy8.ws-us94.gitpod.io",
-          'Authorization': `Bearer ${access_token}`,
-          'Accept': "application/json",
+          Origin: process.env.REACT_APP_FRONTEND_URL,
+          Authorization: `Bearer ${access_token}`,
+          Accept: "application/json",
           "Content-Type": "application/json",
-        }
+        },
+        body: JSON.stringify(json)
       });
       let data = await res.json();
       if (res.status === 200) {
@@ -47,12 +49,13 @@ export default function ProfileForm(props) {
     const size = file.size;
     const type = file.type;
     const preview_image_url = URL.createObjectURL(file);
-    console.log("file", file, filename, size, type);
+    console.log(filename, size, type)
+    const fileparts = filename.split('.')
+    const extension = fileparts[fileparts.length - 1];
 
-    const presignedurl = await s3Uploadkey()
-    console.log(presignedurl)
+    const presignedurl = await s3Uploadkey(extension)
     try {
-      console.log("s3upload")
+      console.log("s3Uploadkey");
       const res = await fetch(presignedurl, {
         method: "PUT",
         headers: {
@@ -60,10 +63,8 @@ export default function ProfileForm(props) {
         },
         body: file,
       });
-      let data = await res.json();
       if (res.status === 200) {
-        setPresignedurl(data.url)
-        console.log("presigned url: ", data);
+
       } else {
         console.log(res);
       }
