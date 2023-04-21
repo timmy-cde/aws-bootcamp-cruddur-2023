@@ -1,16 +1,16 @@
-import './UserFeedPage.css';
+import "./UserFeedPage.css";
 // import "./ActivityFeed.css";
 import React from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
-import { checkAuth, getAccessToken } from "../lib/CheckAuth";
+import { checkAuth, getAccessToken } from "lib/CheckAuth";
 
-import DesktopNavigation  from '../components/DesktopNavigation';
-import DesktopSidebar     from '../components/DesktopSidebar';
-import ActivityFeed from '../components/ActivityFeed';
-import ActivityForm from '../components/ActivityForm';
-import ProfileHeading from '../components/ProfileHeading';
-
+import DesktopNavigation from "components/DesktopNavigation";
+import DesktopSidebar from "components/DesktopSidebar";
+import ActivityFeed from "components/ActivityFeed";
+import ActivityForm from "components/ActivityForm";
+import ProfileHeading from "components/ProfileHeading";
+import ProfileForm from "components/ProfileForm";
 
 export default function UserFeedPage() {
   const [activities, setActivities] = React.useState([]);
@@ -40,39 +40,36 @@ export default function UserFeedPage() {
         setProfile(resJson[0].profile);
         setActivities(resJson[0].activities);
       } else {
-        console.log(res)
+        console.log(res);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     //prevents double call
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
 
     loadData();
     checkAuth(setUser);
-  }, [])
+  }, []);
 
   return (
     <article>
       <DesktopNavigation user={user} active={"profile"} setPopped={setPopped} />
       <div className="content">
         <ActivityForm popped={popped} setActivities={setActivities} />
-
+        <ProfileForm
+          profile={profile}
+          popped={poppedProfile}
+          setPopped={setPoppedProfile}
+        />
         <div className="activity_feed">
           <ProfileHeading setPopped={setPoppedProfile} profile={profile} />
-          {/* <div className="activity_feed_heading">
-            <div className="title">{profile.display_name}</div>
-            <div className="cruds_count">{profile.cruds_count} Cruds</div>
-          </div> */}
+          <ActivityFeed activities={activities} />
         </div>
-        <ActivityFeed
-          title={`@${profile.display_name}`}
-          activities={activities}
-        />
       </div>
       <DesktopSidebar user={user} />
     </article>
