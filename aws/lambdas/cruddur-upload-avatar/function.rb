@@ -10,7 +10,15 @@ def handler(event:, context:)
     obj = s3.bucket(bucket_name).object(object_key)
     url = obj.presigned_url(:put, expires_in: 60 * 5)
     body = {url: url}.to_json
-    { statusCode: 200, body: body}
+    { 
+        headers: {
+            "Access-Control-Allow-Headers": "*, Authorization",
+            "Access-Control-Allow-Origin": "https://3000-timmycde-awsbootcampcru-a2o55zciwy8.ws-us94.gitpod.io",
+            "Access-Control-Allow-Methods": "OPTIONS,GET,POST"
+        },
+        statusCode: 200, 
+        body: body
+    }
 end
 
 puts handler(
