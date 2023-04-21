@@ -5,6 +5,11 @@ vscode:
     - cweijan.vscode-postgresql-client2
     - dez64ru.macos-modern-theme
     - esbenp.prettier-vscode
+    - rebornix.ruby
+
+    - castwide.solargraph
+
+    - rangav.vscode-thunder-client
 
 tasks:
   - name: aws-cli
