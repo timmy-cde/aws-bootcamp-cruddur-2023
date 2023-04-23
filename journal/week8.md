@@ -121,7 +121,7 @@
 
 - ### Implement Users Profile Page
 
-  - Here are the files we updated/created for the Profile.
+  - Here are the files we updated/created for the Profile Page (we will also add more files that are not shown here in the succeeding parts)
 
     ```sh
     🗁 backend-flask
