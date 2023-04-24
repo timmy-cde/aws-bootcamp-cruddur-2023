@@ -2,28 +2,33 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "codebuild",
+      "Sid": "VisualEditor0",
       "Effect": "Allow",
-      "Resource": "*",
       "Action": [
-        "ecr:BatchCheckLayerAvailability",
+        "ecr:PutLifecyclePolicy",
+        "ecr:GetLifecyclePolicyPreview",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:UploadLayerPart",
+        "ecr:ListImages",
+        "ecr:PutImage",
+        "ecr:SetRepositoryPolicy",
         "ecr:BatchGetImage",
         "ecr:CompleteLayerUpload",
         "ecr:DescribeImages",
         "ecr:DescribeRepositories",
-        "ecr:GetAuthorizationToken",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:GetLifecyclePolicy",
-        "ecr:GetLifecyclePolicyPreview",
-        "ecr:GetRepositoryPolicy",
-        "ecr:InitiateLayerUpload",
-        "ecr:ListImages",
-        "ecr:PutImage",
-        "ecr:PutLifecyclePolicy",
-        "ecr:SetRepositoryPolicy",
         "ecr:StartLifecyclePolicyPreview",
-        "ecr:UploadLayerPart"
-      ]
+        "ecr:InitiateLayerUpload",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetRepositoryPolicy",
+        "ecr:GetLifecyclePolicy"
+      ],
+      "Resource": "arn:aws:ecr:us-east-1:532819517439:repository/backend-flask"
+    },
+    {
+      "Sid": "VisualEditor1",
+      "Effect": "Allow",
+      "Action": "ecr:GetAuthorizationToken",
+      "Resource": "*"
     }
   ]
 }
