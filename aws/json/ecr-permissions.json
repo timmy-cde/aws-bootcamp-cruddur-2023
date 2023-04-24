@@ -1,0 +1,30 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "codebuild",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::532819517439:role/service-role/codebuild-cruddur-backend-flask-bake-image-service-role"
+            },
+            "Action": [
+              "ecr:BatchCheckLayerAvailability",
+              "ecr:BatchGetImage",
+              "ecr:CompleteLayerUpload",
+              "ecr:DescribeImages",
+              "ecr:DescribeRepositories",
+              "ecr:GetDownloadUrlForLayer",
+              "ecr:GetLifecyclePolicy",
+              "ecr:GetLifecyclePolicyPreview",
+              "ecr:GetRepositoryPolicy",
+              "ecr:InitiateLayerUpload",
+              "ecr:ListImages",
+              "ecr:PutImage",
+              "ecr:PutLifecyclePolicy",
+              "ecr:SetRepositoryPolicy",
+              "ecr:StartLifecyclePolicyPreview",
+              "ecr:UploadLayerPart"
+            ]
+        }
+    ]
+}
