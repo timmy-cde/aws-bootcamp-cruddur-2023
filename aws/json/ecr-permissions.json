@@ -4,9 +4,7 @@
     {
       "Sid": "codebuild",
       "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::532819517439:root"
-      },
+      "Resource": "*",
       "Action": [
         "ecr:BatchCheckLayerAvailability",
         "ecr:BatchGetImage",
