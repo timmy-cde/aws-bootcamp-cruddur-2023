@@ -8,6 +8,7 @@
         "ecr:PutLifecyclePolicy",
         "ecr:GetLifecyclePolicyPreview",
         "ecr:GetDownloadUrlForLayer",
+        "ecr:GetAuthorizationToken",
         "ecr:UploadLayerPart",
         "ecr:ListImages",
         "ecr:PutImage",
@@ -22,12 +23,6 @@
         "ecr:GetRepositoryPolicy",
         "ecr:GetLifecyclePolicy"
       ],
-      "Resource": "arn:aws:ecr:us-east-1:532819517439:repository/backend-flask"
-    },
-    {
-      "Sid": "VisualEditor1",
-      "Effect": "Allow",
-      "Action": "ecr:GetAuthorizationToken",
       "Resource": "*"
     }
   ]
