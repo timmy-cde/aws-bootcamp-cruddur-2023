@@ -1,0 +1,29 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:PutLifecyclePolicy",
+        "ecr:GetLifecyclePolicyPreview",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:GetAuthorizationToken",
+        "ecr:UploadLayerPart",
+        "ecr:ListImages",
+        "ecr:PutImage",
+        "ecr:SetRepositoryPolicy",
+        "ecr:BatchGetImage",
+        "ecr:CompleteLayerUpload",
+        "ecr:DescribeImages",
+        "ecr:DescribeRepositories",
+        "ecr:StartLifecyclePolicyPreview",
+        "ecr:InitiateLayerUpload",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetRepositoryPolicy",
+        "ecr:GetLifecyclePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

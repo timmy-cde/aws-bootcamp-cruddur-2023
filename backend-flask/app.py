@@ -105,7 +105,7 @@ cors = CORS(
 # Rollbar ------------------
 rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
 
-@app.before_first_request
+# @app.before_first_request
 def init_rollbar():
     """init rollbar module"""
     rollbar.init(
@@ -129,7 +129,7 @@ def init_rollbar():
 
 @app.route('/api/health-check')
 def health_check():
-  return {'success': True}, 200
+  return {'success': True, 'ver': 1}, 200
 
 
 @app.route("/api/message_groups", methods=['GET'])
