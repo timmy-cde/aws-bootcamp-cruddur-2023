@@ -29,51 +29,49 @@ Parameters:
     Type: Number
     Default: 4567
 
-  FrontendHealthCheckIntervalSeconds: 
+  FrontendHealthCheckIntervalSeconds:
     Type: Number
     Default: 15
-  FrontendHealthCheckPath: 
+  FrontendHealthCheckPath:
     Type: String
     Default: "/"
-  FrontendHealthCheckPort: 
+  FrontendHealthCheckPort:
     Type: String
     Default: 80
   FrontendHealthCheckProtocol:
     Type: String
     Default: HTTP
-  FrontendHealthCheckTimeoutSeconds: 
+  FrontendHealthCheckTimeoutSeconds:
     Type: Number
     Default: 5
-  FrontendHealthyThresholdCount: 
+  FrontendHealthyThresholdCount:
     Type: Number
     Default: 2
   FrontendUnhealthyThresholdCount:
     Type: Number
     Default: 2
-      
-  BackendHealthCheckIntervalSeconds: 
+
+  BackendHealthCheckIntervalSeconds:
     Type: Number
     Default: 15
-  BackendHealthCheckPath: 
+  BackendHealthCheckPath:
     Type: String
     Default: "/api/health-check"
-  BackendHealthCheckPort: 
+  BackendHealthCheckPort:
     Type: String
     Default: 80
   BackendHealthCheckProtocol:
     Type: String
     Default: HTTP
-  BackendHealthCheckTimeoutSeconds: 
+  BackendHealthCheckTimeoutSeconds:
     Type: Number
     Default: 5
-  BackendHealthyThresholdCount: 
+  BackendHealthyThresholdCount:
     Type: Number
     Default: 2
   BackendUnhealthyThresholdCount:
     Type: Number
     Default: 2
-
-
 
 Resources:
   FargateCluster:
@@ -90,7 +88,7 @@ Resources:
         ExecuteCommandConfiguration:
           Logging: DEFAULT
       ServiceConnectDefaults:
-        Namespace: cruddur
+        Namespace: cruddur-2
   ALB:
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-loadbalancer.html
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -104,8 +102,7 @@ Resources:
       Subnets:
         Fn::Split:
           - ","
-          - Fn::ImportValue:
-              !Sub "${NetworkingStack}PublicSubnetIds"
+          - Fn::ImportValue: !Sub "${NetworkingStack}PublicSubnetIds"
       LoadBalancerAttributes:
         # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-elasticloadbalancingv2-loadbalancer-loadbalancerattributes.html
         - Key: routing.http2.enabled
@@ -158,7 +155,7 @@ Resources:
       Conditions:
         - Field: host-header
           HostHeaderConfig:
-            Values: 
+            Values:
               - api.tmanuel.cloud
       Actions:
         - Type: forward
@@ -171,9 +168,8 @@ Resources:
     Properties:
       GroupName: !Sub "${AWS::StackName}AlbSG"
       GroupDescription: Public Facing SG for our Cruddur ALB
-      VpcId: 
-        Fn::ImportValue:
-          !Sub ${NetworkingStack}VpcId
+      VpcId:
+        Fn::ImportValue: !Sub ${NetworkingStack}VpcId
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 443
@@ -189,7 +185,7 @@ Resources:
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !Sub "${AWS::StackName}BackendTG"
+      # Name: !Sub "${AWS::StackName}BackendTG"
       Port: !Ref BackendPort
       HealthCheckEnabled: true
       HealthCheckProtocol: !Ref BackendHealthCheckProtocol
@@ -200,21 +196,24 @@ Resources:
       HealthyThresholdCount: !Ref BackendHealthyThresholdCount
       UnhealthyThresholdCount: !Ref BackendUnhealthyThresholdCount
       IpAddressType: ipv4
-      Matcher: 
+      Matcher:
         HttpCode: 200
       Protocol: HTTP
       ProtocolVersion: HTTP2
-      TargetGroupAttributes: 
+      TargetType: ip
+      TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 0
-      VpcId: 
-        Fn::ImportValue:
-          !Sub ${NetworkingStack}VpcId
+      VpcId:
+        Fn::ImportValue: !Sub ${NetworkingStack}VpcId
+      Tags:
+        - Key: target-group-name
+          Value: backend
   FrontendTG:
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !Sub "${AWS::StackName}FrontendTG"
+      # Name: !Sub "${AWS::StackName}FrontendTG"
       Port: !Ref FrontendPort
       HealthCheckEnabled: true
       HealthCheckProtocol: !Ref FrontendHealthCheckProtocol
@@ -225,17 +224,19 @@ Resources:
       HealthyThresholdCount: !Ref FrontendHealthyThresholdCount
       UnhealthyThresholdCount: !Ref FrontendUnhealthyThresholdCount
       IpAddressType: ipv4
-      Matcher: 
+      Matcher:
         HttpCode: 200
       Protocol: HTTP
       ProtocolVersion: HTTP2
-      TargetGroupAttributes: 
+      TargetType: ip
+      TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 0
-      VpcId: 
-        Fn::ImportValue:
-          !Sub ${NetworkingStack}VpcId
-
+      VpcId:
+        Fn::ImportValue: !Sub ${NetworkingStack}VpcId
+      Tags:
+        - Key: target-group-name
+          Value: frontend
 
 Outputs:
   ClusterName:
@@ -244,5 +245,13 @@ Outputs:
       Name: !Sub "${AWS::StackName}ClusterName"
   ALBSecurityGroupId:
     Value: !GetAtt ALBSG.GroupId
-    Export: 
+    Export:
       Name: !Sub "${AWS::StackName}ALBSecurityGroupId"
+  FrontendTGArn:
+    Value: !Ref FrontendTG
+    Export:
+      Name: !Sub "${AWS::StackName}FrontendTGArn"
+  BackendTGArn:
+    Value: !Ref BackendTG
+    Export:
+      Name: !Sub "${AWS::StackName}BackendTGArn"
