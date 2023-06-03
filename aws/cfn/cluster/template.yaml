@@ -22,16 +22,13 @@ Parameters:
     Default: CrdNet
   CertificateArn:
     Type: String
+
   FrontendPort:
     Type: Number
     Default: 3000
-  BackendPort:
-    Type: Number
-    Default: 4567
-
   FrontendHealthCheckIntervalSeconds:
     Type: Number
-    Default: 15
+    Default: 20
   FrontendHealthCheckPath:
     Type: String
     Default: "/"
@@ -43,7 +40,7 @@ Parameters:
     Default: HTTP
   FrontendHealthCheckTimeoutSeconds:
     Type: Number
-    Default: 5
+    Default: 15
   FrontendHealthyThresholdCount:
     Type: Number
     Default: 2
@@ -51,9 +48,12 @@ Parameters:
     Type: Number
     Default: 2
 
+  BackendPort:
+    Type: Number
+    Default: 4567
   BackendHealthCheckIntervalSeconds:
     Type: Number
-    Default: 15
+    Default: 20
   BackendHealthCheckPath:
     Type: String
     Default: "/api/health-check"
@@ -65,7 +65,7 @@ Parameters:
     Default: HTTP
   BackendHealthCheckTimeoutSeconds:
     Type: Number
-    Default: 5
+    Default: 15
   BackendHealthyThresholdCount:
     Type: Number
     Default: 2
@@ -174,12 +174,12 @@ Resources:
         - IpProtocol: tcp
           FromPort: 443
           ToPort: 443
-          CidrIp: 0.0.0.0/0
+          CidrIp: '0.0.0.0/0'
           Description: INTERNET HTTPS
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
-          CidrIp: 0.0.0.0/0
+          CidrIp: '0.0.0.0/0'
           Description: INTERNET HTTP
   # We have to create this SG before the service so we can pass it to the database SG.
   ServiceSG:
@@ -189,13 +189,14 @@ Resources:
       GroupName: !Sub "${AWS::StackName}ServSG"
       GroupDescription: Security for Fargate Services for Cruddur
       VpcId:
-        Fn::ImportValue: !Sub ${NetworkingStack}VpcId
+        Fn::ImportValue: 
+          !Sub ${NetworkingStack}VpcId
       SecurityGroupIngress:
         - IpProtocol: tcp
           SourceSecurityGroupId: !GetAtt ALBSG.GroupId
-          FromPort: 80
-          ToPort: 80
-          Description: ALB 
+          FromPort: !Ref BackendPort
+          ToPort: !Ref BackendPort
+          Description: ALB HTTP
   BackendTG:
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-targetgroup.html
     Type: AWS::ElasticLoadBalancingV2::TargetGroup

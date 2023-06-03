@@ -3,7 +3,7 @@ Description: |
   The primary Postgres RDS Database for the application
     - RDS Instance
     - Database Security Group
-    - DB
+    - DBSubnetGroup
 
 Parameters:
   NetworkingStack:
