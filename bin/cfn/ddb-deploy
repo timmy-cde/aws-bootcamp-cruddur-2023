@@ -10,15 +10,27 @@ ARTIFACT_BUCKET="cfn-artifacts-tim"
 sam build \
 --config-file $CONFIG_PATH \
 --template-file $TEMPLATE_PATH \
---build-dir $FUNC_DIR \
 --base-dir $FUNC_DIR
+# --build-dir $FUNC_DIR \
 # --parameter-overrides
+
+TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/.aws-sam/build/template.yaml"
+OUTPUT_TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/.aws-sam/build/packaged.yaml"
 
 # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-package.html
 sam package \
 --s3-bucket $ARTIFACT_BUCKET \
 --config-file $CONFIG_PATH \
---template-file $TEMPLATE_PATH
+--output-template-file $OUTPUT_TEMPLATE_PATH \
+--template-file $TEMPLATE_PATH \
+--s3-prefix "ddb"
+
+PACKAGED_TEMPLATE_PATH="/workspace/aws-bootcamp-cruddur-2023/.aws-sam/build/packaged.yaml"
 
 # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-deploy.html
-# sam deploy
+sam deploy \
+--template-file $PACKAGED_TEMPLATE_PATH \
+--config-file $CONFIG_PATH \
+--stack-name CrdDdb \
+--tags group=cruddur-db \
+--capabilities CAPABILITY_IAM
