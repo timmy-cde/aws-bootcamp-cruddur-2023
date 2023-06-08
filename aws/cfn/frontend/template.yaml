@@ -22,10 +22,10 @@ Resources:
       PolicyDocument:
         Statement:
           - Action:
-              - s3:GetObject
+              - 's3:GetObject'
             Effect: Allow
-            Resource: !Sub "arn:aws::s3:::${RootBucket}/*"
-            Principal: "*"
+            Resource: !Sub 'arn:aws:s3:::${RootBucket}/*'
+            Principal: '*'
 
   # This will redirect to the Root domain
   WwwBucket:
@@ -57,9 +57,9 @@ Resources:
       Name: !Sub "${RootBucketName}."
       Type: A
       AliasTarget:
-        DNSName: !GetAtt Distribution.DomainName
         # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html#cfn-route53-aliastarget-hostedzoneid
         # Specify Z2FDTNDATAQYW2. This is always the hosted zone ID when you create an alias record that routes traffic to a CloudFront distribution.
+        DNSName: !GetAtt Distribution.DomainName
         HostedZoneId: Z2FDTNDATAQYW2 
 
   WwwBucketDomain:
@@ -80,13 +80,13 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
+        Aliases:
+          - !Ref WwwBucketName
+          - !Ref RootBucketName
         Comment: Frontend Reactjs for Cruddur
         Enabled: true
         HttpVersion: http2and3
         DefaultRootObject: index.html
-        Aliases:
-          - !Ref WwwBucketName
-          - !Ref RootBucketName
         Origins:
           - DomainName: !GetAtt RootBucket.DomainName
             Id: RootBucketOrigin 
