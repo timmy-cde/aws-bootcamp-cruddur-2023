@@ -113,9 +113,9 @@
 
 - ### CFN Networking Layer
 
-  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/networking/template.yaml) |
-  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/networking/config.toml) |
-  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/bin/cfn/networking)
+  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/networking/template.yaml) |
+  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/networking/config.toml) |
+  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/bin/cfn/networking)
 
   The networking resources of the template are:
 
@@ -145,9 +145,9 @@
 
 - ### CFN Cluster Layer
 
-  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/cluster/template.yaml) |
-  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/cluster/config.toml) |
-  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/bin/cfn/cluster)
+  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/cluster/template.yaml) |
+  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/cluster/config.toml) |
+  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/bin/cfn/cluster)
 
   The cluster resources of the template are:
 
@@ -185,9 +185,9 @@
 
 - ### CFN Service Layer for Backend
 
-  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/service/template.yaml) |
-  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/service/config.toml) |
-  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/bin/cfn/service)
+  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/service/template.yaml) |
+  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/service/config.toml) |
+  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/bin/cfn/service)
 
   The backend service resources of the template are:
 
@@ -208,9 +208,9 @@
 
 - ### CFN Database Layer (RDS)
 
-  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/db/template.yaml) |
-  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/db/config.toml) |
-  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/bin/cfn/db)
+  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/db/template.yaml) |
+  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/db/config.toml) |
+  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/bin/cfn/db)
 
   The Postgres database resources of the template are:
 
@@ -238,12 +238,12 @@
 
 - ### DynamoDB using SAM
 
-  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/ddb/template.yaml) |
-  [Cruddur Messaging Stream Lambda](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/ddb/cruddur-messaging-stream/lambda_function.py) |
-  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/ddb/config.toml) |
-  [Build (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/ddb/build) |
-  [Package (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/ddb/package) |
-  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/ddb/deploy)
+  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/ddb/template.yaml) |
+  [Cruddur Messaging Stream Lambda](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/ddb/cruddur-messaging-stream/lambda_function.py) |
+  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/ddb/config.toml) |
+  [Build (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/ddb/build) |
+  [Package (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/ddb/package) |
+  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/ddb/deploy)
 
   Since we are using sam to deploy the dynamodb and the lambda function, we need to first build and package the dynamodb stream to a zip where it will be uploaded in the `cfn-artifacts-tim` s3 bucket before deploying the yaml template.
 
@@ -259,10 +259,10 @@
 
 - ### CI/CD
 
-  [CodeBuild (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/cicd/nested/codebuild.yaml) |
-  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/cicd/template.yaml) |
-  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/cicd/config.toml) |
-  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/bin/cfn/cicd)
+  [CodeBuild (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/cicd/nested/codebuild.yaml) |
+  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/cicd/template.yaml) |
+  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/cicd/config.toml) |
+  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/bin/cfn/cicd)
 
   Here, we used a nested cfn stack, where the codebuild template is nested inside the cicd template.
 
@@ -296,9 +296,9 @@
 
 - ### CFN Static Website Hosting for Frontend
 
-  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/frontend/template.yaml) |
-  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/aws/cfn/frontend/config.toml) |
-  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/week-10/bin/cfn/frontend)
+  [Template (yaml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/frontend/template.yaml) |
+  [Config (toml)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/aws/cfn/frontend/config.toml) |
+  [Deploy (bash)](https://github.com/timmy-cde/aws-bootcamp-cruddur-2023/blob/main/bin/cfn/frontend)
 
   The Frontend resources of the template are:
 
