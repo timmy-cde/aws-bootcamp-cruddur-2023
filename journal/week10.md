@@ -320,6 +320,8 @@
   - WwwBucketName (www.tmanuel.cloud)
   - RootBucketName (tmanuel.cloud)
 
+  Delete the existing A record name for rootbucketname (tmanuel.cloud) first before deploying the template.
+
 ## Challenges
 
 - Namespace Name
