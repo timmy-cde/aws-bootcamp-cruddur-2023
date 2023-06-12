@@ -23,8 +23,8 @@ jobs:
       env:
         REACT_APP_BACKEND_URL: ${{ secrets.REACT_APP_BACKEND_URL }}
         REACT_APP_FRONTEND_URL: ${{ secrets.REACT_APP_FRONTEND_URL }}
-        REACT_APP_AWS_PROJECT_REGION: ${{ vars.REACT_APP_AWS_PROJECT_REGION }}
-        REACT_APP_AWS_COGNITO_REGION: ${{ vars.REACT_APP_AWS_COGNITO_REGION }}
+        REACT_APP_AWS_PROJECT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        REACT_APP_AWS_COGNITO_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         REACT_APP_AWS_USER_POOLS_ID: ${{ secrets.REACT_APP_AWS_USER_POOLS_ID }}
         REACT_APP_CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID}} 
         REACT_APP_API_GATEWAY_ENDPOINT: ${{ secrets.REACT_APP_API_GATEWAY_ENDPOINT }}
@@ -44,7 +44,7 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
         GITHUB_ACTIONS_WORKFLOW: true
       run: |
         echo "===========Installing gems==========="
