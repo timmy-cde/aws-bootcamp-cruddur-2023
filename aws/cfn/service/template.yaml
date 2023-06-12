@@ -153,9 +153,9 @@ Resources:
               - "CMD-SHELL"
               - "curl -f http://localhost:4567/api/health-check || exit 1"
             Interval: 30
-            Timeout: 5
+            Timeout: 20
             Retries: 3
-            StartPeriod: 60
+            StartPeriod: 120
           PortMappings:
             - Name: !Ref ContainerName
               ContainerPort: !Ref ContainerPort
