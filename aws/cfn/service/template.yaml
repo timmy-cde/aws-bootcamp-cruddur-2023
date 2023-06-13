@@ -151,11 +151,11 @@ Resources:
           HealthCheck:
             Command:
               - "CMD-SHELL"
-              - "curl -f http://localhost:4567/api/health-check || exit 1"
+              - 'python /backend-flask/bin/health-check'
             Interval: 30
-            Timeout: 20
+            Timeout: 5
             Retries: 3
-            StartPeriod: 120
+            StartPeriod: 60
           PortMappings:
             - Name: !Ref ContainerName
               ContainerPort: !Ref ContainerPort
