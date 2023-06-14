@@ -4,3 +4,6 @@ frontend-react-js/build/**/*
 *.rpm
 *.env
 node_modules
+.aws-sam
+build.toml
+tmp/*
