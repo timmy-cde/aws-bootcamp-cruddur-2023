@@ -2,12 +2,14 @@ import './ActivityForm.css';
 import React from "react";
 import process from 'process';
 import { ReactComponent as BombIcon } from './svg/bomb.svg';
-import { getAccessToken } from "../lib/CheckAuth";
+import { getAccessToken } from "lib/CheckAuth";
+import FormErrors from "components/FormErrors";
 
 export default function ActivityForm(props) {
   const [count, setCount] = React.useState(0);
   const [message, setMessage] = React.useState('');
   const [ttl, setTtl] = React.useState('7-days');
+  const [errors, setErrors] = React.useState([]);
 
   const classes = []
   classes.push('count')
@@ -45,9 +47,11 @@ export default function ActivityForm(props) {
         setTtl('7-days')
         props.setPopped(false)
       } else {
+        setErrors(data);
         console.log(res)
       }
     } catch (err) {
+      setErrors([`generic_${res.status}`]);
       console.log(err);
     }
   }
@@ -63,34 +67,29 @@ export default function ActivityForm(props) {
 
   if (props.popped === true) {
     return (
-      <form 
-        className='activity_form'
-        onSubmit={onsubmit}
-      >
+      <form className="activity_form" onSubmit={onsubmit}>
         <textarea
           type="text"
           placeholder="what would you like to say?"
           value={message}
-          onChange={textarea_onchange} 
+          onChange={textarea_onchange}
         />
-        <div className='submit'>
-          <div className={classes.join(' ')}>{240-count}</div>
-          <button type='submit'>Crud</button>
-          <div className='expires_at_field'>
-            <BombIcon className='icon' />
-            <select
-              value={ttl}
-              onChange={ttl_onchange} 
-            >
-              <option value='30-days'>30 days</option>
-              <option value='7-days'>7 days</option>
-              <option value='3-days'>3 days</option>
-              <option value='1-day'>1 day</option>
-              <option value='12-hours'>12 hours</option>
-              <option value='3-hours'>3 hours</option>
-              <option value='1-hour'>1 hour </option>
+        <div className="submit">
+          <div className={classes.join(" ")}>{240 - count}</div>
+          <button type="submit">Crud</button>
+          <div className="expires_at_field">
+            <BombIcon className="icon" />
+            <select value={ttl} onChange={ttl_onchange}>
+              <option value="30-days">30 days</option>
+              <option value="7-days">7 days</option>
+              <option value="3-days">3 days</option>
+              <option value="1-day">1 day</option>
+              <option value="12-hours">12 hours</option>
+              <option value="3-hours">3 hours</option>
+              <option value="1-hour">1 hour </option>
             </select>
           </div>
+          <FormErrors errors={errors} />
         </div>
       </form>
     );
