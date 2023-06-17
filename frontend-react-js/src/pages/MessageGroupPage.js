@@ -1,13 +1,14 @@
-import './MessageGroupPage.css';
+import "./MessageGroupPage.css";
 import React from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
-import {checkAuth, getAccessToken} from '../lib/CheckAuth';
+import { checkAuth } from "lib/CheckAuth";
+import { get } from "lib/Requests";
 
-import DesktopNavigation  from '../components/DesktopNavigation';
-import MessageGroupFeed from '../components/MessageGroupFeed';
-import MessagesFeed from '../components/MessageFeed';
-import MessagesForm from '../components/MessageForm';
+import DesktopNavigation from 'components/DesktopNavigation';
+import MessageGroupFeed from 'components/MessageGroupFeed';
+import MessagesFeed from 'components/MessageFeed';
+import MessagesForm from 'components/MessageForm';
 
 export default function MessageGroupPage() {
   const [messageGroups, setMessageGroups] = React.useState([]);
@@ -18,50 +19,20 @@ export default function MessageGroupPage() {
   const params = useParams();
 
   const loadMessageGroupsData = async () => {
-    try {
-      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/message_groups`
-      await getAccessToken();
-      const access_token = localStorage.getItem("access_token")
-      const res = await fetch(backend_url, {
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        },
-        method: "GET"
-      });
-      let resJson = await res.json();
-      if (res.status === 200) {
-        setMessageGroups(resJson)
-      } else {
-        console.log(res)
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };  
+    const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/message_groups`;
+    get(backend_url, null, (data) => {
+      setMessageGroups(data);
+    });
+  };
 
   const loadMessageGroupData = async () => {
-    try {
-      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/messages/${params.message_group_uuid}`
-      await getAccessToken();
-      const access_token = localStorage.getItem("access_token")
-      const res = await fetch(backend_url, {
-        headers: {
-          Authorization: `Bearer ${access_token}`
-        },
-        method: "GET"
-      });
-      let resJson = await res.json();
-      if (res.status === 200) {
-        setMessages(resJson)
-      } else {
-        console.log(res)
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };  
+    const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/messages/${params.message_group_uuid}`;
+    get(backend_url, null, (data) => {
+      setMessages(data);
+    });
+  };
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     //prevents double call
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;
@@ -69,14 +40,14 @@ export default function MessageGroupPage() {
     loadMessageGroupsData();
     loadMessageGroupData();
     checkAuth(setUser);
-  }, [])
+  }, []);
   return (
     <article>
-      <DesktopNavigation user={user} active={'home'} setPopped={setPopped} />
-      <section className='message_groups'>
+      <DesktopNavigation user={user} active={"home"} setPopped={setPopped} />
+      <section className="message_groups">
         <MessageGroupFeed message_groups={messageGroups} />
       </section>
-      <div className='content messages'>
+      <div className="content messages">
         <MessagesFeed messages={messages} />
         <MessagesForm setMessages={setMessages} />
       </div>
