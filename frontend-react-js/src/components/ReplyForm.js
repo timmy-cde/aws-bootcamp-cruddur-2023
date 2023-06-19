@@ -24,20 +24,24 @@ export default function ReplyForm(props) {
       activity_uuid: props.activity.uuid,
       message: message,
     };
-    post(backend_url, payload_data, setErrors, (data) => {
-      // add activity to the feed
-      let activities_deep_copy = JSON.parse(JSON.stringify(props.activities));
-      let found_activity = activities_deep_copy.find(function (element) {
-        return element.uuid === props.activity.uuid;
-      });
-      console.log({ found_activity });
-      found_activity.replies.push(data);
+    post(backend_url, payload_data, {
+      auth: true,
+      setErrors: setErrors,
+      success: (data) => {
+        // add activity to the feed
+        // let activities_deep_copy = JSON.parse(JSON.stringify(props.activities));
+        // let found_activity = activities_deep_copy.find(function (element) {
+        //   return element.uuid === props.activity.uuid;
+        // });
+        // console.log({ found_activity });
+        // found_activity.replies.push(data);
+        // props.setActivities(activities_deep_copy);
 
-      props.setActivities(activities_deep_copy);
-      // reset and close the form
-      setCount(0);
-      setMessage("");
-      props.setPopped(false);
+        // reset and close the form
+        setCount(0);
+        setMessage("");
+        props.setPopped(false);
+      }
     });
   };
 

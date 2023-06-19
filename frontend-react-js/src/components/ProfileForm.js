@@ -83,10 +83,14 @@ export default function ProfileForm(props) {
       display_name: displayName,
     };
 
-    put(backend_url, payload_data, setErrors, (data) => {
-      setBio(null);
-      setDisplayName(null);
-      props.setPopped(false);
+    put(backend_url, payload_data, {
+      auth: true,
+      setErrors: setErrors,
+      success: (data) => {
+        setBio(null);
+        setDisplayName(null);
+        props.setPopped(false);
+      }
     });
   };
 

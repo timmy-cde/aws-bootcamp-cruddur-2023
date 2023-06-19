@@ -22,16 +22,22 @@ export default function MessageGroupNewPage() {
 
   const loadUserShortData = async () => {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/users/@${params.handle}/short`
-    get(backend_url, null, (data) => {
-      console.log('other user:',data)
-      setOtherUser(data)
+    get(backend_url, {
+      auth: true,
+      success: (data) => {
+        console.log("other user:", data);
+        setOtherUser(data);
+      }
     });
   };  
   
   const loadMessageGroupsData = async () => {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/message_groups`
-    get(backend_url, null, (data) => {
-      setMessageGroups(data);
+    get(backend_url, {
+      auth: true,
+      success: (data) => {
+        setMessageGroups(data);
+      }
     });
   };  
 

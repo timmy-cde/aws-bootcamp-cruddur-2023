@@ -1,29 +1,35 @@
-import "./NotificationsFeedPage.css";
+import "./ActivityShowPage.css";
+
 import React from "react";
+import { useParams } from "react-router-dom";
 
 import { checkAuth } from "lib/CheckAuth";
 import { get } from "lib/Requests";
 
 import DesktopNavigation from "components/DesktopNavigation";
 import DesktopSidebar from "components/DesktopSidebar";
-import ActivityFeed from "components/ActivityFeed";
 import ActivityForm from "components/ActivityForm";
 import ReplyForm from "components/ReplyForm";
+import Replies from "components/Replies";
+import ActivityItem from "components/ActivityItem";
 
-export default function NotificationsFeedPage() {
-  const [activities, setActivities] = React.useState([]);
+export default function ActivityShowPage() {
+  const [activity, setActivity] = React.useState(null);
+  const [replies, setReplies] = React.useState([]);
   const [popped, setPopped] = React.useState(false);
   const [poppedReply, setPoppedReply] = React.useState(false);
   const [replyActivity, setReplyActivity] = React.useState({});
   const [user, setUser] = React.useState(null);
   const dataFetchedRef = React.useRef(false);
+  const params = useParams();
 
   const loadData = async () => {
-    const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/notifications`;
+    const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/@${params.handle}/status/${params.activity_uuid}`;
     get(backend_url, {
-      auth: true,
+      auth: false,
       success: (data) => {
-        setActivities(data);
+        setActivity(data.activity);
+        setReplies(data.replies);
       },
     });
   };
@@ -37,34 +43,36 @@ export default function NotificationsFeedPage() {
     checkAuth(setUser);
   }, []);
 
+
   return (
     <article>
-      <DesktopNavigation
-        user={user}
-        active={"notifications"}
-        setPopped={setPopped}
-      />
+      <DesktopNavigation user={user} active={"home"} setPopped={setPopped} />
       <div className="content">
         <ActivityForm
+          user_handle={user}
           popped={popped}
           setPopped={setPopped}
-          setActivities={setActivities}
         />
         <ReplyForm
           activity={replyActivity}
           popped={poppedReply}
           setPopped={setPoppedReply}
-          setActivities={setActivities}
-          activities={activities}
         />
         <div className="activity_feed">
           <div className="activity_feed_heading">
-            <div className="title">Notifications</div>
+            <div className="title">Home</div>
           </div>
-          <ActivityFeed
+          {activity && (
+            <ActivityItem
+              setReplyActivity={setReplyActivity}
+              setPopped={setPoppedReply}
+              activity={activity}
+            />
+          )}
+          <Replies
             setReplyActivity={setReplyActivity}
             setPopped={setPoppedReply}
-            activities={activities}
+            replies={replies}
           />
         </div>
       </div>

@@ -18,7 +18,6 @@ export default function UserFeedPage() {
   const [popped, setPopped] = React.useState([]);
   const [poppedProfile, setPoppedProfile] = React.useState([]);
   const [user, setUser] = React.useState(null);
-  const [errors, setErrors] = React.useState([]);
   const dataFetchedRef = React.useRef(false);
 
   const params = useParams();
@@ -26,13 +25,16 @@ export default function UserFeedPage() {
   const loadData = async () => {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/@${params.handle}`;
 
-    get(backend_url, setErrors, (data) => {
-      // setProfile(resJson.profile);
-      // setActivities(resJson.activities);
-      // it has [0] based on the output of the sql contrary to the output of andrew
-      console.log('setprofile', data[0].profile)
-      setProfile(data[0].profile);
-      setActivities(data[0].activities);
+    get(backend_url, {
+      auth: false,
+      success: (data) => {
+        // setProfile(resJson.profile);
+        // setActivities(resJson.activities);
+        // it has [0] based on the output of the sql contrary to the output of andrew
+        console.log("setprofile", data[0].profile);
+        setProfile(data[0].profile);
+        setActivities(data[0].activities);
+      },
     });
   };
 

@@ -1,5 +1,4 @@
 import "./HomeFeedPage.css";
-// import "./ActivityFeed.css";
 import React from "react";
 
 import { checkAuth } from "lib/CheckAuth";
@@ -21,8 +20,11 @@ export default function HomeFeedPage() {
 
   const loadData = async () => {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/home`;
-    get(backend_url, null, (data) => {
-      setActivities(data);
+    get(backend_url, {
+      auth: true,
+      success: (data) => {
+        setActivities(data);
+      }
     });
   };
 
@@ -49,8 +51,6 @@ export default function HomeFeedPage() {
           activity={replyActivity}
           popped={poppedReply}
           setPopped={setPoppedReply}
-          setActivities={setActivities}
-          activities={activities}
         />
         <div className="activity_feed">
           <div className="activity_feed_heading">

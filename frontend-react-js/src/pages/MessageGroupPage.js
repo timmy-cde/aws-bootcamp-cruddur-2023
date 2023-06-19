@@ -20,15 +20,21 @@ export default function MessageGroupPage() {
 
   const loadMessageGroupsData = async () => {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/message_groups`;
-    get(backend_url, null, (data) => {
-      setMessageGroups(data);
+    get(backend_url, {
+      auth: true,
+      success: (data) => {
+        setMessageGroups(data);
+      }
     });
   };
 
   const loadMessageGroupData = async () => {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/messages/${params.message_group_uuid}`;
-    get(backend_url, null, (data) => {
-      setMessages(data);
+    get(backend_url, {
+      auth: true,
+      success: (data) => {
+        setMessages(data);
+      }
     });
   };
 

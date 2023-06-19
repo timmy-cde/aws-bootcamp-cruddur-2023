@@ -15,8 +15,11 @@ export default function MessageGroupsPage() {
 
   const loadData = async () => {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/message_groups`
-    get(backend_url, null, (data) => {
-      setMessageGroups(data);
+    get(backend_url, {
+      auth: true,
+      success: (data) => {
+        setMessageGroups(data);
+      }
     });
   };  
 
