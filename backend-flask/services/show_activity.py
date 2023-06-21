@@ -6,7 +6,7 @@ class ShowActivity:
     now = datetime.now(timezone.utc).astimezone()
     
     sql = db.template('activities', 'show')
-    results = db.query_array_json(sql,{
+    results = db.query_object_json(sql,{
       'uuid': activity_uuid
     })
     return results

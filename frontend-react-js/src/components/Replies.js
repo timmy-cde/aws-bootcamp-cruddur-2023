@@ -3,7 +3,6 @@ import ActivityItem from "./ActivityItem";
 
 export default function Replies(props) {
   let content;
-  console.log('replies: ', props.replies)
   if (props.replies.length === 0) {
     content = (
       <div className="replies_primer">

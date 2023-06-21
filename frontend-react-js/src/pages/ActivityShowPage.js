@@ -1,7 +1,7 @@
 import "./ActivityShowPage.css";
 
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { checkAuth } from "lib/CheckAuth";
 import { get } from "lib/Requests";
@@ -11,7 +11,7 @@ import DesktopSidebar from "components/DesktopSidebar";
 import ActivityForm from "components/ActivityForm";
 import ReplyForm from "components/ReplyForm";
 import Replies from "components/Replies";
-import ActivityItem from "components/ActivityItem";
+import ActivityShowItem from "components/ActivityShowItem";
 
 export default function ActivityShowPage() {
   const [activity, setActivity] = React.useState(null);
@@ -22,6 +22,7 @@ export default function ActivityShowPage() {
   const [user, setUser] = React.useState(null);
   const dataFetchedRef = React.useRef(false);
   const params = useParams();
+  const navigate = useNavigate();
 
   const loadData = async () => {
     const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/@${params.handle}/status/${params.activity_uuid}`;
@@ -56,14 +57,19 @@ export default function ActivityShowPage() {
         <ReplyForm
           activity={replyActivity}
           popped={poppedReply}
+          setReplies={setReplies}
           setPopped={setPoppedReply}
         />
         <div className="activity_feed">
-          <div className="activity_feed_heading">
-            <div className="title">Home</div>
+          <div className="activity_feed_heading flex">
+            <div className="back" onClick={() => navigate(-1)}>
+              &larr;
+            </div>
+            <div className="title">Crud</div>
           </div>
           {activity && (
-            <ActivityItem
+            <ActivityShowItem
+              expanded={true}
               setReplyActivity={setReplyActivity}
               setPopped={setPoppedReply}
               activity={activity}

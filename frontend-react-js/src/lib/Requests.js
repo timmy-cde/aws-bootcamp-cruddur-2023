@@ -1,4 +1,3 @@
-import { getMouseEventOptions } from "@testing-library/user-event/dist/utils";
 import { getAccessToken } from "lib/CheckAuth";
 
 async function request(method, url, payload_data, options) {

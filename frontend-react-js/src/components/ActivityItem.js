@@ -1,22 +1,25 @@
-import './ActivityItem.css';
+import "./ActivityItem.css";
 
-import { Link } from "react-router-dom";
-import ActivityContent  from '../components/ActivityContent';
-import ActivityActionReply  from '../components/ActivityActionReply';
-import ActivityActionRepost  from '../components/ActivityActionRepost';
-import ActivityActionLike  from '../components/ActivityActionLike';
-import ActivityActionShare  from '../components/ActivityActionShare';
+import { useNavigate } from "react-router-dom";
+import ActivityContent from "components/ActivityContent";
+import ActivityActionReply from "components/ActivityActionReply";
+import ActivityActionRepost from "components/ActivityActionRepost";
+import ActivityActionLike from "components/ActivityActionLike";
+import ActivityActionShare from "components/ActivityActionShare";
 
 export default function ActivityItem(props) {
+  const navigate = useNavigate();
 
+  const attrs = {};
+  attrs.className = "activity_item clickable";
+  attrs.onClick = () =>
+    navigate(`/@${props.activity.handle}/status/${props.activity.uuid}`);
 
   return (
-    <Link
-      className="activity_item"
-      to={`/@${props.activity.handle}/status/${props.activity.uuid}`}
-    >
+    <div {...attrs}>
       <div className="activity_main">
         <ActivityContent activity={props.activity} />
+        {/* {expanded_meta} */}
         <div className="activity_actions">
           <ActivityActionReply
             setReplyActivity={props.setReplyActivity}
@@ -36,6 +39,6 @@ export default function ActivityItem(props) {
           <ActivityActionShare activity_uuid={props.activity.uuid} />
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
