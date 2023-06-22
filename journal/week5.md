@@ -1,4 +1,4 @@
-# Week 5 — DynamoDB and Serverless Caching
+# Week 5 — DynamoDB
 
 ## Required Homework
 
