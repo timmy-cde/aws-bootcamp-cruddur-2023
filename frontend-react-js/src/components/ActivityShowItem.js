@@ -21,6 +21,14 @@ export default function ActivityShowItem(props) {
     );
   }
 
+  console.log("props: ", props)
+
+  const avatarStyles = {
+    backgroundImage: `url("https://assets.tmanuel.cloud/avatars/${props.activity.cognito_user_id}.jpg")`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  };
+
   let expires_at = (
     <div
       className="expires_at"
@@ -41,6 +49,7 @@ export default function ActivityShowItem(props) {
           <Link
             className="activity_avatar"
             to={`/@` + props.activity.handle}
+            style={avatarStyles}
           ></Link>
           <div className="activity_content">
             <div className="activity_meta">

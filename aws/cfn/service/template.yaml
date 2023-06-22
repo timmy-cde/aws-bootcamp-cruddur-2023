@@ -71,6 +71,10 @@ Parameters:
   SecretsOtelExporterOtlpHeaders:
     Type: String
     Default: "arn:aws:ssm:us-east-1:532819517439:parameter/cruddur/backend-flask/OTEL_EXPORTER_OTLP_HEADERS"
+  DDBMessageTable:
+    Type: String
+  AWSEndpointUrl:
+    Type: String
 
 Resources:
   FargateService:
@@ -168,6 +172,10 @@ Resources:
               awslogs-region: !Sub "${AWS::Region}"
               awslogs-stream-prefix: !Ref ContainerName
           Environment:
+            - Name: DDB_MESSAGE_TABLE
+              Value: !Ref DDBMessageTable
+            - Name: AWS_ENDPOINT_URL
+              Value: !Ref AWSEndpointUrl
             - Name: OTEL_SERVICE_NAME
               Value: !Ref EnvOtelServiceName
             - Name: OTEL_EXPORTER_OTLP_ENDPOINT

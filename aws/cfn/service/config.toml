@@ -6,3 +6,5 @@ stack_name = 'CrdSrvBackendFlask'
 [parameters]
 EnvFrontendUrl = 'https://tmanuel.cloud'
 EnvBackendUrl = 'https://api.tmanuel.cloud'
+AWSEndpointUrl = 'https://dynamodb.us-east-1.amazonaws.com'
+DDBMessageTable = 'CrdDdb-DynamoDBTable-5DEDJ08K94GJ'
