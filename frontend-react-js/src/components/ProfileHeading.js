@@ -1,6 +1,5 @@
 import "./ProfileHeading.css";
 import EditProfileButton from "../components/EditProfileButton";
-import ProfileAvatar from "./ProfileAvatar";
 import AvatarStyle from "./AvatarStyle";
 import { useNavigate } from "react-router-dom";
 

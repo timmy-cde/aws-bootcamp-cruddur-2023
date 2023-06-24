@@ -1,6 +1,6 @@
 import './ProfileInfo.css';
 import { ReactComponent as ElipsesIcon } from './svg/elipses.svg';
-import ProfileAvatar from './ProfileAvatar';
+import AvatarStyle from './AvatarStyle';
 import React from "react";
 
 
@@ -37,7 +37,7 @@ export default function ProfileInfo(props) {
         <button onClick={signOut}>Sign Out</button>
       </div>
       <div className="profile-info" onClick={click_pop}>
-        <ProfileAvatar id={props.user.cognito_user_uuid} />
+        <div className="profile-avatar" style={AvatarStyle(props.user.cognito_user_uuid)}></div>
         <div className="profile-desc">
           <div className="profile-display-name">
             {props.user.display_name || "My Name"}
