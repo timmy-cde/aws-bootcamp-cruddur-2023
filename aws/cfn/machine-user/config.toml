@@ -1,4 +1,4 @@
 [deploy]
 bucket = 'cfn-artifacts-tim'
 region = 'us-east-1'
-stack_name = 'CrdSrvBackendFlask'
+stack_name = 'CrdMachineUser'

@@ -8,6 +8,7 @@ import ActivityActionReply from "components/ActivityActionReply";
 import ActivityActionRepost from "components/ActivityActionRepost";
 import ActivityActionLike from "components/ActivityActionLike";
 import ActivityActionShare from "components/ActivityActionShare";
+import AvatarStyle from "./AvatarStyle";
 
 export default function ActivityShowItem(props) {
   let expanded_meta;
@@ -41,6 +42,7 @@ export default function ActivityShowItem(props) {
           <Link
             className="activity_avatar"
             to={`/@` + props.activity.handle}
+            style={AvatarStyle(props.activity.cognito_user_id)}
           ></Link>
           <div className="activity_content">
             <div className="activity_meta">
@@ -70,10 +72,10 @@ export default function ActivityShowItem(props) {
               {/* activity_times */}
             </div>
             {/* activity_meta */}
-            <div className="message">{props.activity.message}</div>
           </div>
           {/* activity_content */}
         </div>
+        <div className="message">{props.activity.message}</div>
         {expanded_meta}
         <div className="activity_actions">
           <ActivityActionReply

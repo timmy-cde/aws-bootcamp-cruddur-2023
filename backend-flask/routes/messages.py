@@ -57,4 +57,6 @@ def load(app):
           cognito_user_id=g.cognito_user_id
         )
 
+      print("model: ", model)
+
       return model_json(model)
