@@ -59,7 +59,7 @@ export default function UserFeedPage() {
         />
         <div className="activity_feed">
           <ProfileHeading setPopped={setPoppedProfile} profile={profile} />
-          <ActivityFeed activities={activities} />
+          <ActivityFeed activities={activities} profile={profile} />
         </div>
       </div>
       <DesktopSidebar user={user} />

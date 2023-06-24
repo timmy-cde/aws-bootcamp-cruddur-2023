@@ -18,7 +18,7 @@ export default function ActivityItem(props) {
   return (
     <div {...attrs}>
       <div className="activity_main">
-        <ActivityContent activity={props.activity} />
+        <ActivityContent profile={props.profile} activity={props.activity} />
         {/* {expanded_meta} */}
         <div className="activity_actions">
           <ActivityActionReply
