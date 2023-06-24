@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { post } from 'lib/Requests';
 import FormErrors from "components/FormErrors";
 
-export default function ActivityForm(props) {
+export default function MessageForm(props) {
   const [count, setCount] = React.useState(0);
   const [message, setMessage] = React.useState('');
   const [errors, setErrors] = React.useState([]);

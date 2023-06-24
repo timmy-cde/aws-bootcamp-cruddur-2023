@@ -2,7 +2,8 @@ import './ActivityContent.css';
 
 import { Link } from "react-router-dom";
 import { format_datetime, time_future, time_ago } from '../lib/DateTimeFormats';
-import {ReactComponent as BombIcon} from './svg/bomb.svg';
+import { ReactComponent as BombIcon } from './svg/bomb.svg';
+import AvatarStyle from "./AvatarStyle";
 
 export default function ActivityContent(props) {
 
@@ -14,18 +15,13 @@ export default function ActivityContent(props) {
                   </div>
 
   }
-  const avatarStyles = {
-    backgroundImage: `url("https://assets.tmanuel.cloud/avatars/${props.activity.cognito_user_id}.jpg")`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  };
 
   return (
     <div className="activity_content_wrap">
       <Link
         className="activity_avatar"
         to={`/@` + props.activity.handle}
-        style={avatarStyles}
+        style={AvatarStyle(props.activity.cognito_user_id)}
       ></Link>
       <div className="activity_content">
         <div className="activity_meta">

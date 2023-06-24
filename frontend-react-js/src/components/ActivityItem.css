@@ -72,3 +72,11 @@
 .activity_item.expandedMeta .activity_content .activity_identity{
   flex-grow: 1;
 }
+
+.message {
+  color: rgb(255,255,255);
+}
+
+.created_at {
+  color: rgb(72,77,95);
+}

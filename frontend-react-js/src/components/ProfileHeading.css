@@ -1,3 +1,9 @@
+.profile-block{
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 10px;
+}
+
 .profile_heading {
   padding-bottom: 0px;
 }

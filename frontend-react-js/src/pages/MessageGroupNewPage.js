@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import DesktopNavigation  from 'components/DesktopNavigation';
 import MessageGroupFeed from 'components/MessageGroupFeed';
 import MessagesFeed from 'components/MessageFeed';
-import MessagesForm from 'components/MessageForm';
+import MessageForm from 'components/MessageForm';
 
 import { checkAuth } from "lib/CheckAuth";
 import { get } from "lib/Requests";
@@ -52,13 +52,16 @@ export default function MessageGroupNewPage() {
   }, [])
   return (
     <article>
-      <DesktopNavigation user={user} active={'home'} setPopped={setPopped} />
-      <section className='message_groups'>
-        <MessageGroupFeed otherUser={otherUser} message_groups={messageGroups} />
+      <DesktopNavigation user={user} active={"home"} setPopped={setPopped} />
+      <section className="message_groups">
+        <MessageGroupFeed
+          otherUser={otherUser}
+          message_groups={messageGroups}
+        />
       </section>
-      <div className='content messages'>
+      <div className="content messages">
         <MessagesFeed messages={messages} />
-        <MessagesForm setMessages={setMessages} />
+        <MessageForm otherUser={otherUser} setMessages={setMessages} />
       </div>
     </article>
   );
