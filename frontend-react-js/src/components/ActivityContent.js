@@ -6,7 +6,6 @@ import { ReactComponent as BombIcon } from './svg/bomb.svg';
 import AvatarStyle from "./AvatarStyle";
 
 export default function ActivityContent(props) {
-  console.log("props: ", props)
   let expires_at;
   if (props.activity.expires_at) {
     expires_at =  <div className="expires_at" title={format_datetime(props.activity.expires_at)}>
