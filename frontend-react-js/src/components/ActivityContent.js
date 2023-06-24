@@ -6,7 +6,7 @@ import { ReactComponent as BombIcon } from './svg/bomb.svg';
 import AvatarStyle from "./AvatarStyle";
 
 export default function ActivityContent(props) {
-
+  console.log("props: ", props)
   let expires_at;
   if (props.activity.expires_at) {
     expires_at =  <div className="expires_at" title={format_datetime(props.activity.expires_at)}>
@@ -15,13 +15,16 @@ export default function ActivityContent(props) {
                   </div>
 
   }
+  let cognito_user_id = !props.profile
+    ? props.activity.cognito_user_id
+    : props.profile.cognito_user_uuid;
 
   return (
     <div className="activity_content_wrap">
       <Link
         className="activity_avatar"
         to={`/@` + props.activity.handle}
-        style={AvatarStyle(props.activity.cognito_user_id)}
+        style={AvatarStyle(cognito_user_id)}
       ></Link>
       <div className="activity_content">
         <div className="activity_meta">

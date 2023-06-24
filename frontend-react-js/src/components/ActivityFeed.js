@@ -18,6 +18,7 @@ export default function ActivityFeed(props) {
               setPopped={props.setPopped}
               key={activity.uuid}
               activity={activity}
+              profile={props.profile}
             />
           );
         })}

@@ -1,6 +1,7 @@
 import "./ProfileHeading.css";
 import EditProfileButton from "../components/EditProfileButton";
 import ProfileAvatar from "./ProfileAvatar";
+import AvatarStyle from "./AvatarStyle";
 import { useNavigate } from "react-router-dom";
 
 export default function ProfileHeading(props) {
@@ -25,7 +26,7 @@ export default function ProfileHeading(props) {
       </div>
 
       <div className="banner" style={styles}>
-        <ProfileAvatar id={props.profile.cognito_user_uuid} />
+        <div className="profile-avatar" style={AvatarStyle(props.profile.cognito_user_uuid)}></div>
       </div>
 
       <div className="info">
