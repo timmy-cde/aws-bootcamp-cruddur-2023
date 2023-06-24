@@ -25,7 +25,6 @@ export default function MessageGroupNewPage() {
     get(backend_url, {
       auth: true,
       success: (data) => {
-        console.log("other user:", data);
         setOtherUser(data);
       }
     });
