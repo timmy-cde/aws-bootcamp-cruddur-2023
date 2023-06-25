@@ -11,10 +11,10 @@ Parameters:
     Default: backend-flask
   ServiceCpu:
     Type: String
-    Default: "512"
+    Default: "256"
   ServiceMemory:
     Type: String
-    Default: "1024"
+    Default: "512"
   ServiceName:
     Type: String
     Default: backend-flask
@@ -94,7 +94,7 @@ Resources:
               - "CMD-SHELL"
               - 'python /backend-flask/bin/health-check'
             Interval: 30
-            Timeout: 6
+            Timeout: 5
             Retries: 3
             StartPeriod: 60
           PortMappings:
