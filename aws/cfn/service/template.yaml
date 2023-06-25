@@ -9,15 +9,12 @@ Parameters:
   NetworkingStack:
     Type: String
     Description: This is our base layer of networking components eg. VPC
-    Default: CrdNet
   ClusterStack:
     Type: String
     Description: This is our cluster layer eg. ECS Cluster, ALB
-    Default: CrdCluster
   TaskDefinitionStack:
     Type: String
     Description: This is our task definition stack for backend service
-    Default: CrdSrvTaskDef
   ContainerPort:
     Type: Number
     Default: 4567
