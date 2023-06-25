@@ -1,13 +1,14 @@
 import "./NotificationsFeedPage.css";
 import React from "react";
 
-import { Auth } from "aws-amplify";
+import { checkAuth } from "lib/CheckAuth";
+import { get } from "lib/Requests";
 
-import DesktopNavigation from "../components/DesktopNavigation";
-import DesktopSidebar from "../components/DesktopSidebar";
-import ActivityFeed from "../components/ActivityFeed";
-import ActivityForm from "../components/ActivityForm";
-import ReplyForm from "../components/ReplyForm";
+import DesktopNavigation from "components/DesktopNavigation";
+import DesktopSidebar from "components/DesktopSidebar";
+import ActivityFeed from "components/ActivityFeed";
+import ActivityForm from "components/ActivityForm";
+import ReplyForm from "components/ReplyForm";
 
 export default function NotificationsFeedPage() {
   const [activities, setActivities] = React.useState([]);
@@ -18,40 +19,13 @@ export default function NotificationsFeedPage() {
   const dataFetchedRef = React.useRef(false);
 
   const loadData = async () => {
-    try {
-      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/notifications`;
-      const res = await fetch(backend_url, {
-        method: "GET",
-      });
-      let resJson = await res.json();
-      if (res.status === 200) {
-        setActivities(resJson);
-      } else {
-        console.log(res);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const checkAuth = async () => {
-    Auth.currentAuthenticatedUser({
-      // Optional, By default is false.
-      // If set to true, this call will send a
-      // request to Cognito to get the latest user data
-      bypassCache: false,
-    })
-      .then((user) => {
-        console.log("user", user);
-        return Auth.currentAuthenticatedUser();
-      })
-      .then((cognito_user) => {
-        setUser({
-          display_name: cognito_user.attributes.name,
-          handle: cognito_user.attributes.preferred_username,
-        });
-      })
-      .catch((err) => console.log(err));
+    const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/notifications`;
+    get(backend_url, {
+      auth: true,
+      success: (data) => {
+        setActivities(data);
+      },
+    });
   };
 
   React.useEffect(() => {
@@ -60,7 +34,7 @@ export default function NotificationsFeedPage() {
     dataFetchedRef.current = true;
 
     loadData();
-    checkAuth();
+    checkAuth(setUser);
   }, []);
 
   return (

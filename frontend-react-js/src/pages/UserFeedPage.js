@@ -1,9 +1,9 @@
 import "./UserFeedPage.css";
-// import "./ActivityFeed.css";
 import React from "react";
 import { useParams } from "react-router-dom";
 
-import { checkAuth, getAccessToken } from "lib/CheckAuth";
+import { checkAuth } from "lib/CheckAuth";
+import { get } from 'lib/Requests';
 
 import DesktopNavigation from "components/DesktopNavigation";
 import DesktopSidebar from "components/DesktopSidebar";
@@ -23,28 +23,19 @@ export default function UserFeedPage() {
   const params = useParams();
 
   const loadData = async () => {
-    try {
-      const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/@${params.handle}`;
-      await getAccessToken();
-      const access_token = localStorage.getItem("access_token");
-      const res = await fetch(backend_url, {
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-        method: "GET",
-      });
-      let resJson = await res.json();
-      if (res.status === 200) {
+    const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/activities/@${params.handle}`;
+
+    get(backend_url, {
+      auth: false,
+      success: (data) => {
         // setProfile(resJson.profile);
         // setActivities(resJson.activities);
-        setProfile(resJson[0].profile);
-        setActivities(resJson[0].activities);
-      } else {
-        console.log(res);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+        // it has [0] based on the output of the sql contrary to the output of andrew
+        console.log("setprofile", data[0].profile);
+        setProfile(data[0].profile);
+        setActivities(data[0].activities);
+      },
+    });
   };
 
   React.useEffect(() => {
@@ -68,7 +59,7 @@ export default function UserFeedPage() {
         />
         <div className="activity_feed">
           <ProfileHeading setPopped={setPoppedProfile} profile={profile} />
-          <ActivityFeed activities={activities} />
+          <ActivityFeed activities={activities} profile={profile} />
         </div>
       </div>
       <DesktopSidebar user={user} />

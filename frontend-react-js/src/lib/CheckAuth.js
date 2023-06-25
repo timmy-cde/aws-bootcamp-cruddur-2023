@@ -3,7 +3,6 @@ import { Auth } from "aws-amplify";
 const getAccessToken = async () => {
     Auth.currentSession()
     .then((cognito_user_session) => {
-        console.log("X-cognito_user_session", cognito_user_session)
         const access_token = cognito_user_session.accessToken.jwtToken
         localStorage.setItem("access_token", access_token)
     })

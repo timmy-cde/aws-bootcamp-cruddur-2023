@@ -1,0 +1,9 @@
+[deploy]
+bucket = 'cfn-artifacts-tim'
+region = 'us-east-1'
+stack_name = 'CrdSrvTaskDef'
+
+[parameters]
+EnvFrontendUrl = 'https://tmanuel.cloud'
+EnvBackendUrl = 'https://api.tmanuel.cloud'
+DDBMessageTable = 'CrdDdb-DynamoDBTable-5DEDJ08K94GJ'

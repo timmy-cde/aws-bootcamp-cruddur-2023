@@ -53,19 +53,19 @@ Parameters:
     Default: 4567
   BackendHealthCheckIntervalSeconds:
     Type: Number
-    Default: 20
+    Default: 15
   BackendHealthCheckPath:
     Type: String
     Default: "/api/health-check"
   BackendHealthCheckPort:
     Type: String
-    Default: 80
+    Default: 4567
   BackendHealthCheckProtocol:
     Type: String
     Default: HTTP
   BackendHealthCheckTimeoutSeconds:
     Type: Number
-    Default: 15
+    Default: 5
   BackendHealthyThresholdCount:
     Type: Number
     Default: 2

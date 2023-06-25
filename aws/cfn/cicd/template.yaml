@@ -17,13 +17,18 @@ Parameters:
     Type: String
   ArtifactBucketName:
     Type: String
+  BuildSpec:
+    Type: String
   
 Resources:
-  CodeBuildBakeImageStack:
+  CodeBuild:
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-stack.html
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: nested/codebuild.yaml
+      Parameters:
+        ArtifactBucketName: !Ref ArtifactBucketName
+        BuildSpec: !Ref BuildSpec
   CodeStarConnection:
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-codestarconnections-connection.html
     Type: AWS::CodeStarConnections::Connection
@@ -69,7 +74,7 @@ Resources:
               OutputArtifacts:
                 - Name: ImageDefinition
               Configuration:
-                ProjectName: !GetAtt CodeBuildBakeImageStack.Outputs.CodeBuildProjectName
+                ProjectName: !GetAtt CodeBuild.Outputs.CodeBuildProjectName
                 BatchEnabled: false
         # https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-ECS.html
         - Name: Deploy
@@ -89,9 +94,10 @@ Resources:
                 ClusterName:
                   Fn::ImportValue:
                     !Sub ${ClusterStack}ClusterName
-                ServiceName:
-                  Fn::ImportValue:
-                    !Sub ${ServiceStack}ServiceName
+                # We decided not to use a cross-stack so we can tear down a service independently.
+                ServiceName: backend-flask
+                  # Fn::ImportValue:
+                  #   !Sub ${ServiceStack}ServiceName
   CodePipelineRole:
     Type: AWS::IAM::Role
     Properties:
@@ -104,6 +110,19 @@ Resources:
         Version: '2012-10-17'
       Path: /
       Policies:
+        # When the application source downloads the code, 
+        # It needs to zip it and place it in a bucket, 
+        # so we need to supply an artifacts bucket
+        - PolicyName: !Sub ${AWS::StackName}S3ArtifactAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - s3:*
+                Effect: Allow
+                Resource:
+                  - !Sub arn:aws:s3:::${ArtifactBucketName}
+                  - !Sub arn:aws:s3:::${ArtifactBucketName}/*
         - PolicyName: !Sub ${AWS::StackName}EcsDeployPolicy
           PolicyDocument:
             Version: '2012-10-17'
@@ -155,6 +174,7 @@ Resources:
                 - codebuild:StartBuild
                 - codebuild:StopBuild
                 - codebuild:RetryBuild
+                - codebuild:BatchGetBuilds # even though we are not using Batch for Codebuild, AWS still requires permission
                 Effect: Allow
                 Resource: !Join
                   - ''
@@ -163,4 +183,4 @@ Resources:
                     - ':'
                     - !Ref AWS::AccountId
                     - ':project/'
-                    - !GetAtt CodeBuildBakeImageStack.Outputs.CodeBuildProjectName
+                    - !GetAtt CodeBuild.Outputs.CodeBuildProjectName

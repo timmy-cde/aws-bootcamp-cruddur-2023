@@ -2,8 +2,14 @@ import "./ActivityFeed.css";
 import ActivityItem from "./ActivityItem";
 
 export default function ActivityFeed(props) {
-  return (
-    <div className="activity_feed_collection">
+  let content;
+  if (props.activities.length === 0) {
+    content = <div className="activity_feed_primer">
+      <span>Nothing to see here yet</span>
+    </div>
+    
+  } else {
+    content = <div className="activity_feed_collection">
       {props.activities &&
         props.activities.map((activity) => {
           return (
@@ -12,9 +18,12 @@ export default function ActivityFeed(props) {
               setPopped={props.setPopped}
               key={activity.uuid}
               activity={activity}
+              profile={props.profile}
             />
           );
         })}
     </div>
-  );
+  }
+
+  return content;
 }
