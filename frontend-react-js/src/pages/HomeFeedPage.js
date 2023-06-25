@@ -54,7 +54,7 @@ export default function HomeFeedPage() {
         />
         <div className="activity_feed">
           <div className="activity_feed_heading">
-            <div className="title">Home😎</div>
+            <div className="title">Home</div>
           </div>
           <ActivityFeed
             title="Home"
