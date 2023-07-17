@@ -6,4 +6,4 @@ stack_name = 'CrdSrvBackendFlask'
 [parameters]
 NetworkingStack = 'CrdNet'
 ClusterStack = 'CrdCluster'
-TaskDefinitionStack = 'CrdSrvTaskDef'
+TaskDefinitionStack = 'backend-flask'

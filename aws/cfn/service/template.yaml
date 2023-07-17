@@ -72,9 +72,9 @@ Resources:
       #     ContainerName: !Ref ContainerName
       #     ContainerPort: !Ref ContainerPort
       ServiceName: !Ref ServiceName
-      TaskDefinition: 
-       Fn::ImportValue:
-        !Sub "${TaskDefinitionStack}TaskDefinition"
+      TaskDefinition: !Ref TaskDefinitionStack
+      #  Fn::ImportValue:
+      #   !Sub "${TaskDefinitionStack}TaskDefinition"
 
 Outputs:
   ServiceName:
