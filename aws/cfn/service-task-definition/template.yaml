@@ -38,10 +38,11 @@ Parameters:
     Default: 7gojn9iqpjabsdsq7q18a5i24l
   EnvFrontendUrl:
     Type: String
-    Default: "*"
+  EnvFlaskEnv:
+    Type: String
+    Default: production
   EnvBackendUrl:
     Type: String
-    Default: "*"
   EnvXrayUrl:
     Type: String
     Default: "*api.tmanuel.cloud"
@@ -109,6 +110,8 @@ Resources:
               awslogs-region: !Sub "${AWS::Region}"
               awslogs-stream-prefix: !Ref ContainerName
           Environment:
+            - Name: FLASK_ENV
+              Value: !Ref EnvFlaskEnv
             - Name: DDB_MESSAGE_TABLE
               Value: !Ref DDBMessageTable
             - Name: OTEL_SERVICE_NAME

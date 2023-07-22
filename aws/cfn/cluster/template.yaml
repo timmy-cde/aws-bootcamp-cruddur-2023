@@ -93,7 +93,7 @@ Resources:
     # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticloadbalancingv2-loadbalancer.html
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      Name: !Sub "${AWS::StackName}ALB"
+      Name: !Sub "${AWS::StackName}ALB-2"
       Type: application
       IpAddressType: ipv4
       Scheme: internet-facing
